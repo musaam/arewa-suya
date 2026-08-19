@@ -1,0 +1,75 @@
+.menu-item {
+  background: var(--cafe-warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.menu-item:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.menu-item-emoji {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+.menu-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.menu-item-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cafe-espresso);
+}
+
+.menu-item-description {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.menu-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.menu-item-price {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--cafe-brown);
+}
+
+.add-btn {
+  background: var(--cafe-brown);
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.add-btn:hover {
+  background: var(--cafe-espresso);
+  transform: scale(1.04);
+}
+
+.add-btn.added {
+  background: var(--cafe-green);
+}

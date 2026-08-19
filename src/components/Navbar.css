@@ -1,0 +1,232 @@
+.navbar {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #e8e0d8;
+}
+
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Hamburger — hidden on desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 28px;
+  height: 28px;
+  padding: 4px 2px;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 2.5px;
+  background: #1a1a2e;
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.hamburger-line.open:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.hamburger-line.open:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-line.open:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.navbar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #8b1a2b;
+  letter-spacing: 0.01em;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-link {
+  color: #3a3a4a;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.15s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #8b1a2b;
+  background: rgba(139, 26, 43, 0.05);
+}
+
+/* Cart icon link */
+.cart-link {
+  padding: 0.4rem 0.6rem;
+}
+
+.cart-icon {
+  width: 22px;
+  height: 22px;
+  color: #1a1a2e;
+}
+
+.cart-badge {
+  background: #8b1a2b;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  position: absolute;
+  top: 0;
+  right: -2px;
+  transform: translate(25%, -25%);
+}
+
+/* Mobile dropdown menu — hidden on desktop */
+.mobile-menu {
+  display: none;
+}
+
+.mobile-overlay {
+  display: none;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .navbar-inner {
+    padding: 0 1rem;
+    height: 50px;
+  }
+
+  .hamburger {
+    display: flex;
+    order: -1;
+  }
+
+  .navbar-brand {
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* Hide text nav links on mobile, keep cart icon */
+  .nav-link:not(.cart-link) {
+    display: none;
+  }
+
+  .navbar-title {
+    font-size: 1.1rem;
+  }
+
+  /* Overlay */
+  .mobile-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 998;
+  }
+
+  /* Side drawer */
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    background: #ffffff;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    padding: 1rem 0 2rem;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-close {
+    align-self: flex-end;
+    margin: 0.5rem 1rem 1.5rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.15s;
+  }
+
+  .mobile-menu-close svg {
+    width: 20px;
+    height: 20px;
+    color: #3a3a4a;
+  }
+
+  .mobile-menu-close:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .mobile-menu-link {
+    display: block;
+    padding: 1rem 1.75rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #3a3a4a;
+    text-decoration: none;
+    transition: background 0.15s;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .mobile-menu-link:hover,
+  .mobile-menu-link.active {
+    background: rgba(139, 26, 43, 0.05);
+    color: #8b1a2b;
+  }
+}

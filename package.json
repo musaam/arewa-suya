@@ -1,0 +1,24 @@
+{
+  "name": "arewa-suya",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --mode development",
+    "dev:prod": "vite --mode production",
+    "build": "vite build --mode development",
+    "build:prod": "vite build --mode production",
+    "preview": "vite preview",
+    "deploy:dev": "firebase use local && vite build --mode development && firebase deploy",
+    "deploy:prod": "firebase use production && vite build --mode production && firebase deploy"
+  },
+  "dependencies": {
+    "firebase": "11.10.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.4",
+    "vite": "5.4.19"
+  }
+}

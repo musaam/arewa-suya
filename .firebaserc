@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "quiz-app-e79c1",
+    "local": "quiz-app-e79c1",
+    "production": "arewa-suya"
+  }
+}

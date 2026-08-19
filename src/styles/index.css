@@ -1,0 +1,91 @@
+/* ── Arewa Suya Theme Variables ── */
+:root {
+  --cafe-brown: #7E1440;       /* primary — deep rose */
+  --cafe-espresso: #201A1D;    /* darkest — near-black */
+  --cafe-latte: #89D3B0;       /* accent — mint */
+  --cafe-cream: #FDF6F1;       /* background — warm off-white */
+  --cafe-warm-white: #FFFFFF;  /* card surface — pure white */
+  --cafe-gold: #B21E5B;        /* highlight — bright rose */
+  --cafe-green: #2F9E64;       /* success states — forest green */
+  --text-primary: #201A1D;
+  --text-secondary: #6B5D63;
+  --text-light: #9A8D92;
+  --border: #EADFD9;
+  --shadow: 0 2px 12px rgba(32, 26, 29, 0.08);
+  --shadow-hover: 0 4px 20px rgba(32, 26, 29, 0.16);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: #eaf4fb;
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+/* ── Shared button styles ── */
+.btn-primary {
+  background: var(--cafe-brown);
+  color: #fff;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, transform 0.1s;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--cafe-espresso);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--cafe-brown);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  border-color: var(--cafe-brown);
+  background: rgba(92, 61, 46, 0.04);
+}
+
+/* ── App shell ── */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
