@@ -1,63 +1,100 @@
-export const hibiscusRefresher = {
-  id: 'hibiscus-refresher',
-  name: 'Hibiscus Refresher',
-  tagline: 'A bold hibiscus base, crafted with real fruit — refreshing in every sip.',
-  emoji: '🌺',
-  flavours: [
-    {
-      id: 'hibiscus-ginger',
-      flavour: 'Ginger',
-      description: 'A warming kick of fresh ginger blended with our hibiscus base. Bright, bold, and invigorating.',
-      emoji: '🫚',
-      image: '/ginger.jpeg',
-      color: '#c0394a',
-      lightColor: '#fdf0e8',
-    },
-    {
-      id: 'hibiscus-pineapple',
-      flavour: 'Pineapple',
-      description: 'Sweet tropical pineapple meets tart hibiscus for a sunshine-in-a-cup experience.',
-      emoji: '🍍',
-      image: '/pineapple.jpeg',
-      color: '#c0394a',
-      lightColor: '#fdf8e0',
-    },
-    {
-      id: 'hibiscus-strawberry',
-      flavour: 'Strawberry',
-      description: 'Ripe strawberries and hibiscus — fruity, floral, and perfectly balanced.',
-      emoji: '🍓',
-      image: '/strawberry.jpeg',
-      color: '#c0394a',
-      lightColor: '#fde8eb',
-    },
-    {
-      id: 'hibiscus-cucumber',
-      flavour: 'Cucumber',
-      description: 'Cool, crisp cucumber softens the tartness of hibiscus for a light, refreshing finish.',
-      emoji: '🥒',
-      image: '/cucumber.jpeg',
-      color: '#c0394a',
-      lightColor: '#e8f5ec',
-    },
-    {
-      id: 'hibiscus-apple',
-      flavour: 'Apple',
-      description: 'Crisp apple sweetness paired with floral hibiscus — clean, fruity, and refreshing.',
-      emoji: '🍎',
-      image: '/apple.jpeg',
-      color: '#c0394a',
-      lightColor: '#fde8e6',
-    },
-    {
-      id: 'hibiscus-mint',
-      flavour: 'Mint',
-      description: 'Cool mint leaves swirled into hibiscus for a refreshing, herbal twist.',
-      emoji: '🌿',
-      image: '/mint.jpeg',
-      color: '#c0394a',
-      lightColor: '#e6f7ef',
-    },
-  ],
-  price: 5.50,
-}
+// ── Arewa Suya Spot Menu ──
+// Authentic Kano-Style Suya · 100% Halal · Winnipeg
+
+export const menuCategories = [
+  {
+    id: 'suya-combos',
+    name: 'Suya & Combos',
+    icon: '🍢',
+    items: [
+      {
+        id: 'suya-plate',
+        name: 'Suya Plate',
+        description: 'Suya + vegetables',
+        price: 20.00,
+        emoji: '🍖',
+      },
+      {
+        id: 'suya-plate-combo-1',
+        name: 'Suya Plate Combo 1',
+        description: 'Suya + masa + zobo',
+        price: 30.00,
+        emoji: '🍖',
+      },
+      {
+        id: 'suya-plate-combo-2',
+        name: 'Suya Plate Combo 2',
+        description: 'Suya + masa',
+        price: 25.00,
+        emoji: '🍖',
+      },
+    ],
+  },
+  {
+    id: 'suya-bundle',
+    name: 'Suya Bundle',
+    icon: '🔥',
+    badge: 'Best Value!',
+    items: [
+      {
+        id: 'suya-bundle-3',
+        name: 'Suya Bundle — 3 Plates',
+        description: '3 Suya Plates — You save $10!',
+        price: 50.00,
+        emoji: '🍢',
+      },
+    ],
+  },
+  {
+    id: 'family-sides',
+    name: 'Family & Sides',
+    icon: '👨‍👩‍👧‍👦',
+    items: [
+      {
+        id: 'family-suya-tray',
+        name: 'Family Suya Tray',
+        description: 'Generous portion for the family',
+        price: 100.00,
+        emoji: '🍽️',
+      },
+      {
+        id: 'family-tray-combo',
+        name: 'Family Tray Combo',
+        description: 'Suya tray + 8 masa + 6 zobo',
+        price: 140.00,
+        emoji: '🍽️',
+      },
+    ],
+  },
+  {
+    id: 'sides-drinks',
+    name: 'Sides & Drinks',
+    icon: '🥤',
+    items: [
+      {
+        id: 'masa-tray',
+        name: 'Masa Tray',
+        description: 'Traditional rice cakes — tray size',
+        price: 25.00,
+        emoji: '🫓',
+      },
+      {
+        id: 'masa-plate',
+        name: 'Masa Plate',
+        description: 'Traditional rice cakes — plate size',
+        price: 10.00,
+        emoji: '🫓',
+      },
+      {
+        id: 'zobo',
+        name: 'Zobo',
+        description: 'Traditional hibiscus drink',
+        price: 6.00,
+        emoji: '🥤',
+      },
+    ],
+  },
+]
+
+// Flat list of all menu items (for cart/order logic)
+export const allMenuItems = menuCategories.flatMap((cat) => cat.items)
