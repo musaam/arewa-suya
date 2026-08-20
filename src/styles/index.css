@@ -3,8 +3,8 @@
   --cafe-brown: #1a0f0a;       /* primary — dark brown/black */
   --cafe-espresso: #0d0806;    /* darkest — near-black */
   --cafe-latte: #c9a84c;       /* accent — gold */
-  --cafe-cream: #1e1410;       /* background — dark warm brown */
-  --cafe-warm-white: #2a1c14;  /* card surface — dark card */
+  --cafe-cream: #ffffff;       /* background — white */
+  --cafe-warm-white: #ffffff;  /* card surface — white */
   --cafe-gold: #c9a84c;        /* highlight — gold */
   --cafe-red: #8b1a1a;         /* deep red / maroon */
   --cafe-green: #2F9E64;       /* success states — forest green */
@@ -32,7 +32,7 @@ html {
 
 body {
   font-family: 'Lato', sans-serif;
-  background-color: #1a0f0a;
+  background-color: #ffffff;
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
