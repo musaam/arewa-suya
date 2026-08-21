@@ -24,7 +24,7 @@ export default function Navbar() {
         </button>
 
         <Link to="/" className="navbar-brand" onClick={() => setMenuOpen(false)}>
-          <img src="/arewa-suya-logo.png" alt="Arewa Suya logo" className="navbar-logo" />
+          <img src="/arewa-suya-logo.JPG" alt="Arewa Suya logo" className="navbar-logo" />
           <span className="navbar-title">Arewa Suya</span>
         </Link>
 

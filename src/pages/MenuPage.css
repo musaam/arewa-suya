@@ -112,39 +112,6 @@
   margin-bottom: 1.75rem;
 }
 
-/* Badges */
-.hero-badges {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.hero-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.badge-icon {
-  font-size: 1.1rem;
-}
-
-.badge-text {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #c9a84c;
-  letter-spacing: 0.06em;
-}
-
-.badge-separator {
-  width: 1px;
-  height: 20px;
-  background: #c9a84c;
-  opacity: 0.4;
-}
-
 /* Buttons */
 .hero-buttons {
   display: flex;
@@ -200,13 +167,13 @@
 .menu-tagline {
   text-align: center;
   padding: 1.25rem 1rem;
-  border-bottom: 1px solid #3d2a1a;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .menu-tagline p {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #c9a84c;
+  color: #1a0f0a;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -224,22 +191,23 @@
 }
 
 .menu-category {
-  background: #2a1c14;
-  border: 1px solid #3d2a1a;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
   padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .category-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.3rem;
   font-weight: 700;
-  color: #c9a84c;
+  color: #1a0f0a;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border-bottom: 1px solid #3d2a1a;
+  border-bottom: 1px solid #e5e5e5;
   padding-bottom: 0.75rem;
 }
 
@@ -271,7 +239,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(61, 42, 26, 0.5);
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .menu-item-card:last-child {
@@ -286,13 +254,13 @@
 .menu-item-name {
   font-size: 1rem;
   font-weight: 700;
-  color: #f5e6d0;
+  color: #1a1a1a;
   margin-bottom: 0.2rem;
 }
 
 .menu-item-desc {
   font-size: 0.85rem;
-  color: #a08a6e;
+  color: #777777;
 }
 
 .menu-item-action {
@@ -305,15 +273,15 @@
 .menu-item-price {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #c9a84c;
+  color: #1a0f0a;
 }
 
 .menu-item-add-btn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #c9a84c;
-  color: #1a0f0a;
+  background: #1a0f0a;
+  color: #ffffff;
   font-size: 1.2rem;
   font-weight: 700;
   display: flex;
@@ -323,7 +291,7 @@
 }
 
 .menu-item-add-btn:hover {
-  background: #d4b85c;
+  background: #c9a84c;
   transform: scale(1.1);
 }
 
@@ -337,11 +305,11 @@
   max-width: 800px;
   margin: 1rem auto 0;
   padding: 1.5rem 1.25rem;
-  background: #2a1c14;
+  background: #f9f9f9;
   border-radius: 12px;
   margin-left: 1.25rem;
   margin-right: 1.25rem;
-  border: 1px solid #3d2a1a;
+  border: 1px solid #e5e5e5;
 }
 
 @media (min-width: 801px) {
@@ -368,7 +336,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #c9a84c;
+  color: #1a0f0a;
 }
 
 /* ═══════════════════════════════════════════
@@ -380,9 +348,9 @@
   left: 0;
   right: 0;
   z-index: 200;
-  background: #2a1c14;
-  border-top: 1px solid #c9a84c;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  background: #ffffff;
+  border-top: 1px solid #e5e5e5;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
   padding: 0.75rem 1.25rem;
   display: flex;
   align-items: center;
@@ -399,12 +367,12 @@
 .sticky-cart-name {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #f5e6d0;
+  color: #1a1a1a;
 }
 
 .sticky-cart-btn {
-  background: #c9a84c;
-  color: #1a0f0a;
+  background: #1a0f0a;
+  color: #ffffff;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -416,7 +384,7 @@
 }
 
 .sticky-cart-btn:hover {
-  background: #d4b85c;
+  background: #2a1c14;
 }
 
 /* ═══════════════════════════════════════════

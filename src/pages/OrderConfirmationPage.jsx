@@ -7,7 +7,7 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
   return (
     <div className="confirmation-page">
       <div className="confirmation-card">
-        <img src="/arewa-suya-logo.png" alt="Arewa Suya" className="confirm-logo" />
+        <img src="/arewa-suya-logo.JPG" alt="Arewa Suya" className="confirm-logo" />
 
         {orderStatus === 'saving' && (
           <div className="order-status saving">

@@ -1,19 +1,19 @@
 /* ── Arewa Suya Theme Variables ── */
 :root {
-  --cafe-brown: #1a0f0a;       /* primary — dark brown/black */
-  --cafe-espresso: #0d0806;    /* darkest — near-black */
+  --cafe-brown: #1a0f0a;       /* primary — dark brown */
+  --cafe-espresso: #1a0f0a;    /* darkest — headings */
   --cafe-latte: #c9a84c;       /* accent — gold */
   --cafe-cream: #ffffff;       /* background — white */
   --cafe-warm-white: #ffffff;  /* card surface — white */
   --cafe-gold: #c9a84c;        /* highlight — gold */
   --cafe-red: #8b1a1a;         /* deep red / maroon */
   --cafe-green: #2F9E64;       /* success states — forest green */
-  --text-primary: #f5e6d0;     /* light cream text on dark bg */
-  --text-secondary: #c9a84c;   /* gold secondary text */
-  --text-light: #a08a6e;       /* muted warm text */
-  --border: #3d2a1a;           /* dark warm border */
-  --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 4px 20px rgba(201, 168, 76, 0.2);
+  --text-primary: #1a1a1a;     /* dark text for white bg */
+  --text-secondary: #555555;   /* medium gray */
+  --text-light: #888888;       /* muted gray */
+  --border: #e5e5e5;           /* light gray border */
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.1);
   --radius: 12px;
   --radius-sm: 8px;
 }
@@ -47,8 +47,8 @@ button {
 
 /* ── Shared button styles ── */
 .btn-primary {
-  background: var(--cafe-gold);
-  color: #1a0f0a;
+  background: #1a0f0a;
+  color: #ffffff;
   padding: 0.75rem 1.75rem;
   border-radius: var(--radius-sm);
   font-size: 1rem;
@@ -59,25 +59,24 @@ button {
 }
 
 .btn-primary:hover {
-  background: #d4b85c;
+  background: #2a1c14;
   transform: translateY(-1px);
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--cafe-gold);
+  color: #1a0f0a;
   padding: 0.75rem 1.75rem;
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-weight: 600;
-  border: 1.5px solid var(--cafe-gold);
+  border: 1.5px solid #1a0f0a;
   transition: all 0.2s;
   display: inline-block;
 }
 
 .btn-secondary:hover {
-  border-color: #d4b85c;
-  background: rgba(201, 168, 76, 0.1);
+  background: rgba(26, 15, 10, 0.05);
 }
 
 /* ── App shell ── */

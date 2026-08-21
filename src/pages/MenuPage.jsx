@@ -16,7 +16,7 @@ export default function MenuPage() {
       {/* Hero section */}
       <section className="menu-hero">
         <img
-          src="/hero-bg.png"
+          src="/hero-bg-2.png"
           alt="Arewa Suya Spot — Authentic Kano-Style Suya"
           className="hero-image hero-image-desktop"
         />
@@ -42,22 +42,6 @@ export default function MenuPage() {
               our signature spice blend.
             </p>
             <p className="hero-accent">A true taste of Northern Nigeria.</p>
-            <div className="hero-badges">
-              <div className="hero-badge">
-                <span className="badge-icon">☪️</span>
-                <span className="badge-text">100% HALAL</span>
-              </div>
-              <span className="badge-separator"></span>
-              <div className="hero-badge">
-                <span className="badge-icon">📍</span>
-                <span className="badge-text">WINNIPEG</span>
-              </div>
-              <span className="badge-separator"></span>
-              <div className="hero-badge">
-                <span className="badge-icon">🌿</span>
-                <span className="badge-text">AUTHENTIC RECIPE</span>
-              </div>
-            </div>
             <div className="hero-buttons">
               <a href="#menu" className="hero-btn-primary">🍴 VIEW MENU</a>
               <button className="hero-btn-secondary" onClick={() => navigate('/order')}>

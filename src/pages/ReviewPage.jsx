@@ -106,7 +106,7 @@ export default function ReviewPage() {
       {/* Form card */}
       {status === 'success' ? (
         <div className="review-card">
-          <img src="/arewa-suya-logo.png" alt="Arewa Suya" className="review-logo" />
+          <img src="/arewa-suya-logo.JPG" alt="Arewa Suya" className="review-logo" />
           <div className="review-success-icon">★</div>
           <h1>Thank you!</h1>
           <p className="review-success-text">
@@ -118,7 +118,7 @@ export default function ReviewPage() {
         </div>
       ) : (
         <div className="review-card">
-          <img src="/arewa-suya-logo.png" alt="Arewa Suya" className="review-logo" />
+          <img src="/arewa-suya-logo.JPG" alt="Arewa Suya" className="review-logo" />
           <h1>Leave a Review</h1>
           <p className="review-subtitle">How was your experience at Arewa Suya?</p>
 
