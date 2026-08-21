@@ -19,7 +19,7 @@ function AppContent() {
 
   const hideNavbar = location.pathname === '/confirmation'
 
-  async function handleCheckout(customer, { deliveryMethod, deliveryFee }) {
+  async function handleCheckout(customer, { deliveryMethod, deliveryFee, orderDate, orderTime, address, pickupAddress }) {
     const tax = totalPrice * 0.12
     const grandTotal = totalPrice + tax + deliveryFee
 
@@ -31,6 +31,10 @@ function AppContent() {
       },
       deliveryMethod,
       deliveryFee,
+      orderDate: orderDate || '',
+      orderTime: orderTime || '',
+      address: address || '',
+      pickupAddress: pickupAddress || '',
       items: items.map((item) => ({
         id: item.id,
         name: item.name,

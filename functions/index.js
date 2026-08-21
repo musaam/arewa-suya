@@ -31,6 +31,21 @@ exports.sendOrderEmail = onCall(
       )
       .join('')
 
+    // Format order date nicely (e.g. "Saturday, Aug 23, 2026")
+    function formatOrderDate(dateStr) {
+      if (!dateStr) return ''
+      const d = new Date(`${dateStr}T00:00:00`)
+      if (isNaN(d.getTime())) return dateStr
+      return d.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'short', day: 'numeric',
+      })
+    }
+
+    const scheduledDate = formatOrderDate(order.orderDate)
+    const isDelivery = order.deliveryMethod === 'delivery'
+    const locationLabel = isDelivery ? 'Delivery Address' : 'Pickup Location'
+    const locationValue = isDelivery ? (order.address || '') : (order.pickupAddress || '')
+
     const html = `
       <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; color: #4a2a0a;">
         <div style="background: #4a2a0a; padding: 24px 32px; border-radius: 12px 12px 0 0;">
@@ -43,7 +58,10 @@ exports.sendOrderEmail = onCall(
           <p style="margin: 0 0 20px; color: #7b5535;">
             <strong>${order.customer.name}</strong><br/>
             ${order.customer.email || ''}${order.customer.phone ? `<br/>${order.customer.phone}` : ''}
-            <br/><strong>Order type:</strong> ${order.deliveryMethod === 'delivery' ? '🚗 Delivery' : '🏪 Pickup'}
+            <br/><strong>Order type:</strong> ${isDelivery ? '🚗 Delivery' : '🏪 Pickup'}
+            ${scheduledDate ? `<br/><strong>${isDelivery ? 'Delivery' : 'Pickup'} date:</strong> ${scheduledDate}` : ''}
+            ${order.orderTime ? `<br/><strong>${isDelivery ? 'Delivery' : 'Pickup'} time:</strong> ${order.orderTime}` : ''}
+            ${locationValue ? `<br/><strong>${locationLabel}:</strong> ${locationValue}` : ''}
           </p>
 
           <h2 style="margin: 0 0 12px; font-size: 16px; color: #7b4a1e;">Order</h2>
@@ -136,11 +154,27 @@ exports.sendOrderEmail = onCall(
           </table>
 
           <div style="margin-top: 24px; padding: 16px; background: #f2ebe0; border-radius: 8px;">
-            <p style="margin: 0; font-size: 14px; color: #4a2a0a;">
-              ${order.deliveryMethod === 'delivery'
-                ? '<strong>🚗 Delivery:</strong> Your order will be delivered to you shortly.'
-                : '<strong>🏪 Pickup:</strong> Your order will be ready at the counter in about 5–10 minutes.'}
-              <br/>If you have any questions, feel free to reach out to us.
+            <p style="margin: 0 0 12px; font-size: 14px; color: #4a2a0a;">
+              ${isDelivery
+                ? '<strong>🚗 Delivery:</strong> Your order will be delivered to you.'
+                : '<strong>🏪 Pickup:</strong> Your order will be ready for pickup.'}
+            </p>
+            <table style="width: 100%; font-size: 14px; color: #4a2a0a;">
+              ${scheduledDate ? `<tr>
+                <td style="padding: 2px 0; color: #7b5535;"><strong>${isDelivery ? 'Delivery' : 'Pickup'} date:</strong></td>
+                <td style="padding: 2px 0; text-align: right;">${scheduledDate}</td>
+              </tr>` : ''}
+              ${order.orderTime ? `<tr>
+                <td style="padding: 2px 0; color: #7b5535;"><strong>${isDelivery ? 'Delivery' : 'Pickup'} time:</strong></td>
+                <td style="padding: 2px 0; text-align: right;">${order.orderTime}</td>
+              </tr>` : ''}
+              ${locationValue ? `<tr>
+                <td style="padding: 2px 0; color: #7b5535; vertical-align: top;"><strong>${locationLabel}:</strong></td>
+                <td style="padding: 2px 0; text-align: right;">${locationValue}</td>
+              </tr>` : ''}
+            </table>
+            <p style="margin: 12px 0 0; font-size: 13px; color: #7b5535;">
+              If you have any questions, feel free to reach out to us.
             </p>
           </div>
         </div>

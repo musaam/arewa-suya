@@ -1,5 +1,14 @@
 import './OrderConfirmationPage.css'
 
+function formatScheduleDate(dateStr) {
+  if (!dateStr) return ''
+  const d = new Date(`${dateStr}T00:00:00`)
+  if (isNaN(d.getTime())) return dateStr
+  return d.toLocaleDateString('en-US', {
+    weekday: 'long', month: 'short', day: 'numeric',
+  })
+}
+
 export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain }) {
   const orderNumber = order?.orderNumber
     || (order?.firestoreId ? order.firestoreId.slice(-6).toUpperCase() : '…')
@@ -46,6 +55,34 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
               <span>Total paid</span>
               <span>${order.grandTotal.toFixed(2)}</span>
             </div>
+          </div>
+        )}
+
+        {order && (order.orderDate || order.orderTime || order.address || order.pickupAddress) && (
+          <div className="order-schedule">
+            <div className="order-schedule-row">
+              <span className="order-schedule-label">
+                {order.deliveryMethod === 'delivery' ? '🚗 Delivery' : '🏪 Pickup'}
+              </span>
+            </div>
+            {(order.orderDate || order.orderTime) && (
+              <div className="order-schedule-row">
+                <span className="order-schedule-label">When</span>
+                <span className="order-schedule-value">
+                  {formatScheduleDate(order.orderDate)}{order.orderDate && order.orderTime ? ' · ' : ''}{order.orderTime}
+                </span>
+              </div>
+            )}
+            {(order.address || order.pickupAddress) && (
+              <div className="order-schedule-row">
+                <span className="order-schedule-label">
+                  {order.deliveryMethod === 'delivery' ? 'Address' : 'Location'}
+                </span>
+                <span className="order-schedule-value">
+                  {order.deliveryMethod === 'delivery' ? order.address : order.pickupAddress}
+                </span>
+              </div>
+            )}
           </div>
         )}
 

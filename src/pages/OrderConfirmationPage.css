@@ -173,3 +173,36 @@
   width: 100%;
   text-align: center;
 }
+
+/* Order schedule (date / time / location) */
+.order-schedule {
+  width: 100%;
+  background: var(--cafe-cream);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.order-schedule-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.order-schedule-label {
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.order-schedule-value {
+  color: var(--text-primary);
+  text-align: right;
+}

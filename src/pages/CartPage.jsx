@@ -4,11 +4,17 @@ import { useCart } from '../context/CartContext'
 import CartItem from '../components/CartItem'
 import './CartPage.css'
 
+// Arewa Suya Spot pickup location
+export const PICKUP_ADDRESS = 'Arewa Suya Spot, Winnipeg, MB'
+
 export default function CartPage({ onCheckout }) {
   const navigate = useNavigate()
   const { items, totalPrice, totalItems } = useCart()
   const [customer, setCustomer] = useState({ name: '', email: '', phone: '' })
   const [deliveryMethod, setDeliveryMethod] = useState('pickup')
+  const [orderDate, setOrderDate] = useState('')
+  const [orderTime, setOrderTime] = useState('')
+  const [address, setAddress] = useState('')
   const [errors, setErrors] = useState({})
 
   const deliveryFee = deliveryMethod === 'delivery' ? 5.00 : 0
@@ -28,6 +34,46 @@ export default function CartPage({ onCheckout }) {
     if (errors.phone) setErrors((p) => ({ ...p, phone: '' }))
   }
 
+  function getNextWeekendDates() {
+    const dates = []
+    const today = new Date()
+    const d = new Date(today)
+    for (let i = 0; i < 28; i++) {
+      d.setDate(today.getDate() + i)
+      const day = d.getDay()
+      if (day === 0 || day === 6) {
+        dates.push(new Date(d))
+      }
+    }
+    return dates
+  }
+
+  const weekendDates = getNextWeekendDates()
+
+  function formatDateOption(date) {
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'long' })
+    const month = date.toLocaleDateString('en-US', { month: 'short' })
+    const dayNum = date.getDate()
+    return `${dayName}, ${month} ${dayNum}`
+  }
+
+  function formatDateValue(date) {
+    return date.toISOString().split('T')[0]
+  }
+
+  const timeSlots = [
+    '11:00 AM', '11:30 AM',
+    '12:00 PM', '12:30 PM',
+    '1:00 PM', '1:30 PM',
+    '2:00 PM', '2:30 PM',
+    '3:00 PM', '3:30 PM',
+    '4:00 PM', '4:30 PM',
+    '5:00 PM', '5:30 PM',
+    '6:00 PM', '6:30 PM',
+    '7:00 PM', '7:30 PM',
+    '8:00 PM',
+  ]
+
   function validate() {
     const newErrors = {}
     if (!customer.name.trim()) {
@@ -41,13 +87,29 @@ export default function CartPage({ onCheckout }) {
     if (customer.phone.trim() && !/^(\+?1[\s\-.]?)?\(?\d{3}\)?[\s\-.]?\d{3}[\s\-.]?\d{4}$/.test(customer.phone.trim())) {
       newErrors.phone = 'Please enter a valid phone number (e.g. 416-555-1234)'
     }
+    if (!orderDate) {
+      newErrors.orderDate = 'Please select a date'
+    }
+    if (!orderTime) {
+      newErrors.orderTime = 'Please select a time'
+    }
+    if (deliveryMethod === 'delivery' && !address.trim()) {
+      newErrors.address = 'Please enter your delivery address'
+    }
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   function handlePlaceOrder() {
     if (validate()) {
-      onCheckout(customer, { deliveryMethod, deliveryFee })
+      onCheckout(customer, {
+        deliveryMethod,
+        deliveryFee,
+        orderDate,
+        orderTime,
+        address: deliveryMethod === 'delivery' ? address.trim() : '',
+        pickupAddress: deliveryMethod === 'pickup' ? PICKUP_ADDRESS : '',
+      })
     }
   }
 
@@ -156,6 +218,73 @@ export default function CartPage({ onCheckout }) {
               {deliveryMethod === 'delivery' && (
                 <p className="delivery-note">A $5.00 delivery fee will be added to your order.</p>
               )}
+
+              {deliveryMethod === 'delivery' && (
+                <div className={`form-field delivery-address-field ${errors.address ? 'has-error' : ''}`}>
+                  <label htmlFor="delivery-address">Delivery Address</label>
+                  <textarea
+                    id="delivery-address"
+                    placeholder="Street address, unit/apt, city, postal code"
+                    value={address}
+                    onChange={(e) => {
+                      setAddress(e.target.value)
+                      if (errors.address) setErrors((p) => ({ ...p, address: '' }))
+                    }}
+                    rows={3}
+                    autoComplete="street-address"
+                  />
+                  {errors.address && <span className="field-error">{errors.address}</span>}
+                </div>
+              )}
+
+              {deliveryMethod === 'pickup' && (
+                <div className="pickup-address">
+                  <span className="pickup-address-label">📍 Pickup Location</span>
+                  <span className="pickup-address-value">{PICKUP_ADDRESS}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Date & Time selection */}
+            <div className="datetime-section">
+              <h2>{deliveryMethod === 'pickup' ? 'Pickup' : 'Delivery'} Date &amp; Time</h2>
+              <p className="datetime-note">We prepare fresh suya on weekends only (Saturday &amp; Sunday).</p>
+              <div className={`form-field ${errors.orderDate ? 'has-error' : ''}`}>
+                <label htmlFor="order-date">Date</label>
+                <select
+                  id="order-date"
+                  value={orderDate}
+                  onChange={(e) => {
+                    setOrderDate(e.target.value)
+                    if (errors.orderDate) setErrors((p) => ({ ...p, orderDate: '' }))
+                  }}
+                >
+                  <option value="">Select a date</option>
+                  {weekendDates.map((date) => (
+                    <option key={formatDateValue(date)} value={formatDateValue(date)}>
+                      {formatDateOption(date)}
+                    </option>
+                  ))}
+                </select>
+                {errors.orderDate && <span className="field-error">{errors.orderDate}</span>}
+              </div>
+              <div className={`form-field ${errors.orderTime ? 'has-error' : ''}`}>
+                <label htmlFor="order-time">Time</label>
+                <select
+                  id="order-time"
+                  value={orderTime}
+                  onChange={(e) => {
+                    setOrderTime(e.target.value)
+                    if (errors.orderTime) setErrors((p) => ({ ...p, orderTime: '' }))
+                  }}
+                >
+                  <option value="">Select a time</option>
+                  {timeSlots.map((slot) => (
+                    <option key={slot} value={slot}>{slot}</option>
+                  ))}
+                </select>
+                {errors.orderTime && <span className="field-error">{errors.orderTime}</span>}
+              </div>
             </div>
 
             {/* Order summary */}

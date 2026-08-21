@@ -124,6 +124,118 @@
   font-weight: 600;
 }
 
+.field-optional {
+  font-weight: 400;
+  text-transform: none;
+  color: var(--text-light);
+}
+
+/* Date & Time section */
+.datetime-section {
+  background: var(--cafe-warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.datetime-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--cafe-espresso);
+}
+
+.datetime-note {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: -0.5rem;
+}
+
+.form-field select {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--cafe-cream);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.5rem;
+}
+
+.form-field select:focus {
+  border-color: var(--cafe-brown);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cafe-brown) 12%, transparent);
+}
+
+.form-field.has-error select {
+  border-color: #c0392b;
+}
+
+/* Delivery address textarea */
+.form-field textarea {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--cafe-cream);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  resize: vertical;
+}
+
+.form-field textarea::placeholder {
+  color: var(--text-light);
+}
+
+.form-field textarea:focus {
+  border-color: var(--cafe-brown);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cafe-brown) 12%, transparent);
+}
+
+.form-field.has-error textarea {
+  border-color: #c0392b;
+}
+
+.delivery-address-field {
+  margin-top: 1rem;
+}
+
+/* Pickup address display */
+.pickup-address {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  background: color-mix(in srgb, var(--cafe-brown) 5%, var(--cafe-cream));
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pickup-address-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.pickup-address-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 /* Order summary */
 .order-summary {
   background: var(--cafe-warm-white);
