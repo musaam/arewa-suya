@@ -17,7 +17,7 @@ export default function CartPage({ onCheckout }) {
   const [address, setAddress] = useState('')
   const [errors, setErrors] = useState({})
 
-  const deliveryFee = deliveryMethod === 'delivery' ? 5.00 : 0
+  const deliveryFee = deliveryMethod === 'delivery' && address.trim() ? 5.00 : 0
   const tax = totalPrice * 0.12
   const grandTotal = totalPrice + tax + deliveryFee
 
@@ -216,10 +216,6 @@ export default function CartPage({ onCheckout }) {
                 </button>
               </div>
               {deliveryMethod === 'delivery' && (
-                <p className="delivery-note">A $5.00 delivery fee will be added to your order.</p>
-              )}
-
-              {deliveryMethod === 'delivery' && (
                 <div className={`form-field delivery-address-field ${errors.address ? 'has-error' : ''}`}>
                   <label htmlFor="delivery-address">Delivery Address</label>
                   <textarea
@@ -235,6 +231,10 @@ export default function CartPage({ onCheckout }) {
                   />
                   {errors.address && <span className="field-error">{errors.address}</span>}
                 </div>
+              )}
+
+              {deliveryMethod === 'delivery' && address.trim() && (
+                <p className="delivery-note">A $5.00 delivery fee has been added to your order.</p>
               )}
 
               {deliveryMethod === 'pickup' && (

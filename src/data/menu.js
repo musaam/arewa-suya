@@ -1,11 +1,13 @@
 // ── Arewa Suya Spot Menu ──
 // Authentic Kano-Style Suya · 100% Halal · Winnipeg
 
+// Default image used for all items until unique photos are provided.
+const DEFAULT_ITEM_IMAGE = '/menu-item.jpg'
+
 export const menuCategories = [
   {
     id: 'suya-combos',
     name: 'Suya & Combos',
-    icon: '🍢',
     items: [
       {
         id: 'suya-plate',
@@ -13,6 +15,7 @@ export const menuCategories = [
         description: 'Suya + vegetables',
         price: 20.00,
         emoji: '🍖',
+        image: DEFAULT_ITEM_IMAGE,
       },
       {
         id: 'suya-plate-combo-1',
@@ -20,6 +23,7 @@ export const menuCategories = [
         description: 'Suya + masa + zobo',
         price: 30.00,
         emoji: '🍖',
+        image: DEFAULT_ITEM_IMAGE,
       },
       {
         id: 'suya-plate-combo-2',
@@ -27,13 +31,13 @@ export const menuCategories = [
         description: 'Suya + masa',
         price: 25.00,
         emoji: '🍖',
+        image: DEFAULT_ITEM_IMAGE,
       },
     ],
   },
   {
     id: 'suya-bundle',
     name: 'Suya Bundle',
-    icon: '🔥',
     badge: 'Best Value!',
     items: [
       {
@@ -42,13 +46,13 @@ export const menuCategories = [
         description: '3 Suya Plates — You save $10!',
         price: 50.00,
         emoji: '🍢',
+        image: DEFAULT_ITEM_IMAGE,
       },
     ],
   },
   {
     id: 'family-sides',
     name: 'Family & Sides',
-    icon: '👨‍👩‍👧‍👦',
     items: [
       {
         id: 'family-suya-tray',
@@ -56,6 +60,7 @@ export const menuCategories = [
         description: 'Generous portion for the family',
         price: 100.00,
         emoji: '🍽️',
+        image: DEFAULT_ITEM_IMAGE,
       },
       {
         id: 'family-tray-combo',
@@ -63,13 +68,13 @@ export const menuCategories = [
         description: 'Suya tray + 8 masa + 6 zobo',
         price: 140.00,
         emoji: '🍽️',
+        image: DEFAULT_ITEM_IMAGE,
       },
     ],
   },
   {
     id: 'sides-drinks',
     name: 'Sides & Drinks',
-    icon: '🥤',
     items: [
       {
         id: 'masa-tray',
@@ -77,6 +82,7 @@ export const menuCategories = [
         description: 'Traditional rice cakes — tray size',
         price: 25.00,
         emoji: '🫓',
+        image: DEFAULT_ITEM_IMAGE,
       },
       {
         id: 'masa-plate',
@@ -84,6 +90,7 @@ export const menuCategories = [
         description: 'Traditional rice cakes — plate size',
         price: 10.00,
         emoji: '🫓',
+        image: DEFAULT_ITEM_IMAGE,
       },
       {
         id: 'zobo',
@@ -91,6 +98,7 @@ export const menuCategories = [
         description: 'Traditional hibiscus drink',
         price: 6.00,
         emoji: '🥤',
+        image: DEFAULT_ITEM_IMAGE,
       },
     ],
   },
