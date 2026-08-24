@@ -5,6 +5,7 @@ import { getFunctions, httpsCallable } from 'firebase/functions'
 import { db } from './firebase'
 import { CartProvider, useCart } from './context/CartContext'
 import Navbar from './components/Navbar'
+import ScrollToTop from './components/ScrollToTop'
 import MenuPage from './pages/MenuPage'
 import CartPage from './pages/CartPage'
 import OrderConfirmationPage from './pages/OrderConfirmationPage'
@@ -88,6 +89,7 @@ function AppContent() {
 
   return (
     <div className="app">
+      <ScrollToTop />
       {!hideNavbar && <Navbar />}
       <main className="main-content">
         <Routes>
