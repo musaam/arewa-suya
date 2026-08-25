@@ -5,8 +5,8 @@ const sgMail = require('@sendgrid/mail')
 
 const sendgridApiKey = defineSecret('SENDGRID_API_KEY')
 
-const WEBAPP_EMAIL = 'webapp@arewasuya.com'
-const ORDERS_EMAIL = 'orders@arewasuya.com'
+const WEBAPP_EMAIL = 'webapp@arewasuyaspot.ca'
+const ORDERS_EMAIL = 'orders@arewasuyaspot.ca'
 
 exports.sendOrderEmail = onCall(
   { secrets: [sendgridApiKey] },
@@ -201,8 +201,9 @@ exports.sendOrderEmail = onCall(
       }
 
     } catch (err) {
+      // A failed customer confirmation should not prevent the order
+      // notification (business-critical) from being sent. Log and continue.
       logger.error('SendGrid error sending customer confirmation email', { body: err?.response?.body || err.message })
-      throw new HttpsError('internal', 'Failed to send email')
     }
 
     try {
