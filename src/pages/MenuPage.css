@@ -340,6 +340,51 @@
   transform: scale(1.1);
 }
 
+/* Quantity stepper */
+.menu-item-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 20px;
+  padding: 0.15rem;
+}
+
+.menu-item-stepper-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #1a0f0a;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.menu-item-stepper-btn:hover {
+  background: #c9a84c;
+  transform: scale(1.1);
+}
+
+.menu-item-stepper-value {
+  min-width: 1.25rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1a0f0a;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Offset anchor scroll so the fixed navbar doesn't cover the heading */
+.menu-categories {
+  scroll-margin-top: 80px;
+}
+
 /* ═══════════════════════════════════════════
    FEATURE STRIP
    ═══════════════════════════════════════════ */
@@ -456,6 +501,9 @@
   .hero-content {
     padding: 2rem 1.5rem;
     min-height: 480px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -465,6 +513,10 @@
 
   .hero-buttons {
     margin-top: auto;
+  }
+
+  .hero-headline {
+    align-items: center;
   }
 
   .hero-headline-white,

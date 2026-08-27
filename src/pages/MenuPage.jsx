@@ -6,11 +6,16 @@ import './MenuPage.css'
 
 export default function MenuPage() {
   const navigate = useNavigate()
-  const { totalItems, addItem } = useCart()
+  const { items, totalItems, addItem, updateQuantity } = useCart()
   const [lightbox, setLightbox] = useState(null)
 
   const handleAdd = (item) => {
     addItem({ id: item.id, name: item.name, price: item.price, emoji: item.emoji })
+  }
+
+  const getQuantity = (id) => {
+    const cartItem = items.find((i) => i.id === id)
+    return cartItem ? cartItem.quantity : 0
   }
 
   const openLightbox = (item) => setLightbox({ image: item.image, name: item.name })
@@ -63,10 +68,7 @@ export default function MenuPage() {
             </p>
             <p className="hero-accent">A true taste of Northern Nigeria.</p>
             <div className="hero-buttons">
-              <a href="#menu" className="hero-btn-primary">🍴 VIEW MENU</a>
-              <button className="hero-btn-secondary" onClick={() => navigate('/order')}>
-                🛒 ORDER NOW
-              </button>
+              <a href="#menu" className="hero-btn-primary">VIEW MENU</a>
             </div>
           </div>
         </div>
@@ -78,7 +80,7 @@ export default function MenuPage() {
       </div> */}
 
       {/* Menu categories */}
-      <section className="menu-categories">
+      <section className="menu-categories" id="menu">
         {menuCategories.map((category) => (
           <div key={category.id} className="menu-category">
             <h2 className="category-title">
@@ -103,13 +105,35 @@ export default function MenuPage() {
                   </div>
                   <div className="menu-item-action">
                     <span className="menu-item-price">${item.price.toFixed(2)}</span>
-                    <button
-                      className="menu-item-add-btn"
-                      onClick={() => handleAdd(item)}
-                      aria-label={`Add ${item.name} to cart`}
-                    >
-                      +
-                    </button>
+                    {getQuantity(item.id) === 0 ? (
+                      <button
+                        className="menu-item-add-btn"
+                        onClick={() => handleAdd(item)}
+                        aria-label={`Add ${item.name} to cart`}
+                      >
+                        +
+                      </button>
+                    ) : (
+                      <div className="menu-item-stepper" role="group" aria-label={`Quantity for ${item.name}`}>
+                        <button
+                          className="menu-item-stepper-btn"
+                          onClick={() => updateQuantity(item.id, getQuantity(item.id) - 1)}
+                          aria-label={`Decrease quantity of ${item.name}`}
+                        >
+                          −
+                        </button>
+                        <span className="menu-item-stepper-value" aria-live="polite">
+                          {getQuantity(item.id)}
+                        </span>
+                        <button
+                          className="menu-item-stepper-btn"
+                          onClick={() => updateQuantity(item.id, getQuantity(item.id) + 1)}
+                          aria-label={`Increase quantity of ${item.name}`}
+                        >
+                          +
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
