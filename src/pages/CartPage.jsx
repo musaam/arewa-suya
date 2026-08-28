@@ -1,21 +1,56 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import CartItem from '../components/CartItem'
 import './CartPage.css'
 
 // Arewa Suya Spot pickup location
-export const PICKUP_ADDRESS = 'Arewa Suya Spot, Winnipeg, MB'
+export const PICKUP_ADDRESS = '229 Kearney St, Winnipeg, MB'
+
+// Persist checkout form details for the duration of the browser session so they
+// survive navigating away (e.g. "Continue Shopping") and back to the cart.
+const CHECKOUT_STORAGE_KEY = 'arewa-checkout-details'
+
+function loadCheckoutDetails() {
+  try {
+    const raw = sessionStorage.getItem(CHECKOUT_STORAGE_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
+export function clearCheckoutDetails() {
+  try {
+    sessionStorage.removeItem(CHECKOUT_STORAGE_KEY)
+  } catch {
+    /* ignore storage errors */
+  }
+}
 
 export default function CartPage({ onCheckout }) {
   const navigate = useNavigate()
   const { items, totalPrice, totalItems } = useCart()
-  const [customer, setCustomer] = useState({ name: '', email: '', phone: '' })
-  const [deliveryMethod, setDeliveryMethod] = useState('pickup')
-  const [orderDate, setOrderDate] = useState('')
-  const [orderTime, setOrderTime] = useState('')
-  const [address, setAddress] = useState('')
+
+  const saved = loadCheckoutDetails() || {}
+  const [customer, setCustomer] = useState(saved.customer || { name: '', email: '', phone: '' })
+  const [deliveryMethod, setDeliveryMethod] = useState(saved.deliveryMethod || 'pickup')
+  const [orderDate, setOrderDate] = useState(saved.orderDate || '')
+  const [orderTime, setOrderTime] = useState(saved.orderTime || '')
+  const [address, setAddress] = useState(saved.address || '')
   const [errors, setErrors] = useState({})
+
+  // Save form details to sessionStorage whenever they change.
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(
+        CHECKOUT_STORAGE_KEY,
+        JSON.stringify({ customer, deliveryMethod, orderDate, orderTime, address })
+      )
+    } catch {
+      /* ignore storage errors (e.g. private mode quota) */
+    }
+  }, [customer, deliveryMethod, orderDate, orderTime, address])
 
   const deliveryFee = deliveryMethod === 'delivery' && address.trim() ? 5.00 : 0
   const tax = totalPrice * 0.12
@@ -37,8 +72,8 @@ export default function CartPage({ onCheckout }) {
   function getNextWeekendDates() {
     const dates = []
     const today = new Date()
-    const d = new Date(today)
     for (let i = 0; i < 28; i++) {
+      const d = new Date(today)
       d.setDate(today.getDate() + i)
       const day = d.getDay()
       if (day === 0 || day === 6) {
@@ -58,7 +93,12 @@ export default function CartPage({ onCheckout }) {
   }
 
   function formatDateValue(date) {
-    return date.toISOString().split('T')[0]
+    // Use local date components (not toISOString, which converts to UTC and can
+    // shift the date by a day for users in negative UTC offsets in the evening).
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
   }
 
   const timeSlots = [
@@ -110,6 +150,8 @@ export default function CartPage({ onCheckout }) {
         address: deliveryMethod === 'delivery' ? address.trim() : '',
         pickupAddress: deliveryMethod === 'pickup' ? PICKUP_ADDRESS : '',
       })
+      // Order submitted — don't keep the details around for the next order.
+      clearCheckoutDetails()
     }
   }
 
@@ -117,7 +159,6 @@ export default function CartPage({ onCheckout }) {
     return (
       <div className="cart-page">
         <div className="cart-empty">
-          <div className="cart-empty-icon">☕</div>
           <h2>Your order is empty</h2>
           <p>Head back to the menu and add some items!</p>
           <button className="btn-primary" onClick={() => navigate('/')}>
