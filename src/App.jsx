@@ -10,6 +10,7 @@ import MenuPage from './pages/MenuPage'
 import CartPage from './pages/CartPage'
 import OrderConfirmationPage from './pages/OrderConfirmationPage'
 import ReviewPage from './pages/ReviewPage'
+import AdminPage from './pages/AdminPage'
 
 function AppContent() {
   const [completedOrder, setCompletedOrder] = useState(null)
@@ -18,7 +19,7 @@ function AppContent() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const hideNavbar = location.pathname === '/confirmation'
+  const hideNavbar = location.pathname === '/confirmation' || location.pathname === '/admin'
 
   async function handleCheckout(customer, { deliveryMethod, deliveryFee, orderDate, orderTime, address, pickupAddress }) {
     const tax = totalPrice * 0.12
@@ -68,6 +69,7 @@ function AppContent() {
       const docRef = await addDoc(collection(db, 'orders'), {
         ...order,
         orderNumber,
+        status: 'active',
         createdAt: serverTimestamp(),
       })
       setOrderStatus('saved')
@@ -96,6 +98,7 @@ function AppContent() {
           <Route path="/" element={<MenuPage />} />
           <Route path="/order" element={<CartPage onCheckout={handleCheckout} />} />
           <Route path="/reviews" element={<ReviewPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route
             path="/confirmation"
             element={
