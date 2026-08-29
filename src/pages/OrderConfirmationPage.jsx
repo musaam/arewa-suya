@@ -62,7 +62,9 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
           <div className="order-schedule">
             <div className="order-schedule-row">
               <span className="order-schedule-label">
-                {order.deliveryMethod === 'delivery' ? 'Delivery' : 'Pickup'}
+                {order.orderType === 'event'
+                  ? `${order.eventName || 'Event'} Pickup`
+                  : order.deliveryMethod === 'delivery' ? 'Delivery' : 'Pickup'}
               </span>
             </div>
             {(order.orderDate || order.orderTime) && (
@@ -87,7 +89,9 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
         )}
 
         <p className="pickup-note">
-          An order confirmation email has been sent to the email you provided. Please refer to it for details about pickup or delivery.
+          {order?.orderType === 'event'
+            ? `Come to our booth at ${order.eventName || 'the event'} and pick up your order as soon as it's ready. A confirmation email has been sent to you.`
+            : 'An order confirmation email has been sent to the email you provided. Please refer to it for details about pickup or delivery.'}
         </p>
 
         <div className="confirmation-actions">

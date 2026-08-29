@@ -3,26 +3,32 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // The single shared staff/admin account. Update this to match the email
-    // of the Firebase Auth user you create for the shop.
+    // Roles, keyed by the signed-in user's email.
+    //  - admin  (owner): can edit store config AND work the order queue.
+    //  - server (staff):  can work the order queue only.
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == 'server@arewasuyaspot.ca';
+        && request.auth.token.email == 'admin@arewasuyaspot.ca';
     }
 
-    // Orders: customers create them (unauthenticated checkout); only the admin
-    // can read them (they contain customer PII) and update their status.
+    function isStaff() {
+      return request.auth != null
+        && request.auth.token.email in ['admin@arewasuyaspot.ca', 'server@arewasuyaspot.ca'];
+    }
+
+    // Orders: customers create them (unauthenticated checkout); staff (server or
+    // admin) can read them (they contain customer PII) and update their status.
     match /orders/{orderId} {
       // Public checkout writes new orders. Require the shape we expect and that
       // a new order always starts as 'active'. Orders can never be deleted.
       allow create: if request.resource.data.status == 'active'
         && request.resource.data.keys().hasAll(['customer', 'items', 'grandTotal']);
 
-      allow read: if isAdmin();
+      allow read: if isStaff();
 
-      // Admin may only flip an active order to completed (or back), not rewrite
+      // Staff may only flip an active order to completed (or back), not rewrite
       // the order contents.
-      allow update: if isAdmin()
+      allow update: if isStaff()
         && request.resource.data.diff(resource.data).affectedKeys()
              .hasOnly(['status', 'completedAt']);
 
@@ -33,6 +39,13 @@ service cloud.firestore {
     // readable/writable by the unauthenticated checkout flow.
     match /counters/{counterId} {
       allow read, write: if true;
+    }
+
+    // App config (event mode, etc). Anyone can read it (the storefront needs
+    // it to render), but only the admin can change it.
+    match /config/{configId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     // Deny everything else by default.

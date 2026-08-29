@@ -179,6 +179,41 @@
 }
 
 /* ═══════════════════════════════════════════
+   EVENT BANNER
+   ═══════════════════════════════════════════ */
+.event-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: linear-gradient(135deg, #1a7a3c, #0f5a2a);
+  color: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.event-banner-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.event-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.9rem;
+}
+
+.event-banner-text strong {
+  font-size: 1rem;
+}
+
+/* ═══════════════════════════════════════════
    MENU CATEGORIES
    ═══════════════════════════════════════════ */
 .menu-categories {

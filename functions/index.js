@@ -43,8 +43,12 @@ exports.sendOrderEmail = onCall(
 
     const scheduledDate = formatOrderDate(order.orderDate)
     const isDelivery = order.deliveryMethod === 'delivery'
-    const locationLabel = isDelivery ? 'Delivery Address' : 'Pickup Location'
+    const isEvent = order.orderType === 'event'
+    const locationLabel = isEvent ? 'Event Pickup' : (isDelivery ? 'Delivery Address' : 'Pickup Location')
     const locationValue = isDelivery ? (order.address || '') : (order.pickupAddress || '')
+    const orderTypeLabel = isEvent
+      ? `${order.eventName || 'Event'} pickup`
+      : (isDelivery ? 'Delivery' : 'Pickup')
 
     const html = `
       <div style="font-family: sans-serif; max-width: 520px; margin: 0 auto; color: #4a2a0a;">
@@ -58,7 +62,7 @@ exports.sendOrderEmail = onCall(
           <p style="margin: 0 0 20px; color: #7b5535;">
             <strong>${order.customer.name}</strong><br/>
             ${order.customer.email || ''}${order.customer.phone ? `<br/>${order.customer.phone}` : ''}
-            <br/><strong>Order type:</strong> ${isDelivery ? '🚗 Delivery' : '🏪 Pickup'}
+            <br/><strong>Order type:</strong> ${orderTypeLabel}
             ${scheduledDate ? `<br/><strong>${isDelivery ? 'Delivery' : 'Pickup'} date:</strong> ${scheduledDate}` : ''}
             ${order.orderTime ? `<br/><strong>${isDelivery ? 'Delivery' : 'Pickup'} time:</strong> ${order.orderTime}` : ''}
             ${locationValue ? `<br/><strong>${locationLabel}:</strong> ${locationValue}` : ''}
@@ -147,9 +151,11 @@ exports.sendOrderEmail = onCall(
 
           <div style="margin-top: 24px; padding: 16px; background: #f2ebe0; border-radius: 8px;">
             <p style="margin: 0 0 12px; font-size: 14px; color: #4a2a0a;">
-              ${isDelivery
-                ? '<strong>🚗 Delivery:</strong> Your order will be delivered to you.'
-                : '<strong>🏪 Pickup:</strong> Your order will be ready for pickup.'}
+              ${isEvent
+                ? `<strong>${order.eventName || 'Event'}:</strong> Pick up your order at our booth as soon as it's ready.`
+                : isDelivery
+                ? '<strong>Delivery:</strong> Your order will be delivered to you.'
+                : '<strong>Pickup:</strong> Your order will be ready for pickup.'}
             </p>
             <table style="width: 100%; font-size: 14px; color: #4a2a0a;">
               ${scheduledDate ? `<tr>

@@ -257,6 +257,11 @@
   flex-shrink: 0;
 }
 
+.order-tag.event {
+  color: #fff;
+  background: #1a7a3c;
+}
+
 /* Collapsible details */
 .order-details {
   display: flex;
@@ -338,4 +343,252 @@
   .admin-orders-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ═══════════════════════════════════════════
+   EVENT MODE PANEL
+   ═══════════════════════════════════════════ */
+.event-panel {
+  background: #fff;
+  border: 1px solid #e2d0bc;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.event-panel.on {
+  border-color: #1a7a3c;
+  box-shadow: 0 0 0 2px rgba(26, 122, 60, 0.15);
+}
+
+.event-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-panel-head h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #4a2a0a;
+}
+
+.event-panel-status {
+  font-size: 0.82rem;
+  color: #7b5535;
+  margin-top: 0.2rem;
+}
+
+/* Toggle switch */
+.event-switch {
+  width: 52px;
+  height: 30px;
+  border-radius: 15px;
+  background: #d8c4ac;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.event-switch.on {
+  background: #1a7a3c;
+}
+
+.event-switch-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+
+.event-switch.on .event-switch-knob {
+  transform: translateX(22px);
+}
+
+.event-panel-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid #f0e6d6;
+  padding-top: 0.85rem;
+}
+
+.event-items-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4a2a0a;
+}
+
+.event-items-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.35rem 0;
+}
+
+.event-items-group-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #b8956a;
+}
+
+.event-item-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #1a0f0a;
+  cursor: pointer;
+}
+
+.event-item-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: #1a7a3c;
+}
+
+.event-panel-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border-top: 1px solid #f0e6d6;
+  padding-top: 0.85rem;
+}
+
+.event-saved-msg {
+  font-size: 0.85rem;
+  color: #3d6b34;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════
+   MENU EDITOR
+   ═══════════════════════════════════════════ */
+.menu-editor {
+  background: #fff;
+  border: 1px solid #e2d0bc;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menu-editor-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.menu-editor-head h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #4a2a0a;
+}
+
+.menu-editor-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border-top: 1px solid #f0e6d6;
+  padding-top: 0.85rem;
+}
+
+.menu-editor-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.6rem;
+  background: #faf5ee;
+  border-radius: 8px;
+}
+
+.menu-editor-item.unavailable {
+  opacity: 0.6;
+}
+
+.menu-editor-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.menu-editor-name {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #e2d0bc;
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a0f0a;
+}
+
+.menu-editor-price {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.menu-editor-price span {
+  font-weight: 700;
+  color: #7b4a1e;
+}
+
+.menu-editor-price input {
+  width: 80px;
+  border: 1px solid #e2d0bc;
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.menu-editor-desc {
+  border: 1px solid #e2d0bc;
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.85rem;
+  color: #7b5535;
+}
+
+.menu-editor-name:focus,
+.menu-editor-price input:focus,
+.menu-editor-desc:focus {
+  outline: none;
+  border-color: #c9a84c;
+}
+
+.menu-editor-avail {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #4a2a0a;
+  cursor: pointer;
+}
+
+.menu-editor-avail input {
+  width: 16px;
+  height: 16px;
+  accent-color: #1a7a3c;
 }

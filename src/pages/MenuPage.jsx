@@ -1,13 +1,27 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { menuCategories } from '../data/menu'
 import { useCart } from '../context/CartContext'
+import { useConfig } from '../context/ConfigContext'
 import './MenuPage.css'
 
 export default function MenuPage() {
   const navigate = useNavigate()
   const { items, totalItems, addItem, updateQuantity } = useCart()
+  const { eventMode, menuCategories } = useConfig()
   const [lightbox, setLightbox] = useState(null)
+
+  // Hide items explicitly marked unavailable, and in event mode restrict to the
+  // items being sold at the event. Empty categories are dropped.
+  const visibleCategories = menuCategories
+    .map((cat) => ({
+      ...cat,
+      items: cat.items.filter((item) => {
+        if (item.available === false) return false
+        if (eventMode.enabled && !eventMode.itemIds.includes(item.id)) return false
+        return true
+      }),
+    }))
+    .filter((cat) => cat.items.length > 0)
 
   const handleAdd = (item) => {
     addItem({ id: item.id, name: item.name, price: item.price, emoji: item.emoji })
@@ -81,7 +95,16 @@ export default function MenuPage() {
 
       {/* Menu categories */}
       <section className="menu-categories" id="menu">
-        {menuCategories.map((category) => (
+        {eventMode.enabled && (
+          <div className="event-banner">
+            <span className="event-banner-tag">Event</span>
+            <div className="event-banner-text">
+              <strong>We're at {eventMode.name}!</strong>
+              <span>Order below and pick up at our booth. Only event items are available today.</span>
+            </div>
+          </div>
+        )}
+        {visibleCategories.map((category) => (
           <div key={category.id} className="menu-category">
             <h2 className="category-title">
               {category.name}
