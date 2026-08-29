@@ -108,42 +108,81 @@ function isToday(ts) {
   )
 }
 
+// Format the scheduled order date (stored as YYYY-MM-DD). Parse the parts
+// explicitly so it's treated as a local date, not shifted by UTC.
+function formatScheduledDate(dateStr) {
+  if (!dateStr) return ''
+  const [year, month, day] = dateStr.split('-').map(Number)
+  if (!year || !month || !day) return dateStr
+  const d = new Date(year, month - 1, day)
+  return d.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
 function OrderCard({ order, onComplete, completing }) {
+  const [expanded, setExpanded] = useState(false)
   const isDelivery = order.deliveryMethod === 'delivery'
   const location = isDelivery ? order.address : order.pickupAddress
+  const itemCount = order.items?.reduce((sum, i) => sum + (i.quantity || 0), 0) ?? 0
+
   return (
-    <div className="order-card">
-      <div className="order-card-head">
-        <span className="order-number">#{order.orderNumber ?? '—'}</span>
-        <span className={`order-type ${isDelivery ? 'delivery' : 'pickup'}`}>
-          {isDelivery ? '🚗 Delivery' : '🏪 Pickup'}
-        </span>
-        {order.createdAt && <span className="order-time">{formatTime(order.createdAt)}</span>}
-      </div>
+    <div className={`order-card ${expanded ? 'expanded' : ''}`}>
+      {/* Summary row — click to expand/collapse */}
+      <button
+        type="button"
+        className="admin-order-summary"
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        aria-label={`Order ${order.orderNumber ?? ''} for ${order.customer?.name ?? ''}, ${expanded ? 'collapse' : 'expand'} details`}
+      >
+        <span className={`order-chevron ${expanded ? 'open' : ''}`} aria-hidden="true">▸</span>
+        <span className="admin-order-number">#{order.orderNumber ?? '—'}</span>
+        <span className="admin-order-summary-name">{order.customer?.name}</span>
+        <span className="admin-order-summary-meta">{itemCount} item{itemCount === 1 ? '' : 's'}</span>
+        <span className="order-total">${order.grandTotal?.toFixed(2)}</span>
+      </button>
 
-      <div className="order-customer">
-        <strong>{order.customer?.name}</strong>
-        {order.customer?.phone && <span> · {order.customer.phone}</span>}
-      </div>
+      {/* Collapsible details */}
+      {expanded && (
+        <div className="order-details">
+          <div className="order-customer">
+            {order.customer?.phone && <span>{order.customer.phone}</span>}
+            {order.customer?.email && <span className="order-email">{order.customer.email}</span>}
+          </div>
 
-      {(order.orderDate || order.orderTime) && (
-        <div className="order-when">
-          {isDelivery ? 'Deliver' : 'Pickup'}: {order.orderDate} {order.orderTime}
+          {order.orderDate && (
+            <div className="order-when">
+              <span className="order-when-label">{isDelivery ? 'Delivery' : 'Pickup'} date:</span>{' '}
+              {formatScheduledDate(order.orderDate)}
+            </div>
+          )}
+          {order.orderTime && (
+            <div className="order-when">
+              <span className="order-when-label">{isDelivery ? 'Delivery' : 'Pickup'} time:</span>{' '}
+              {order.orderTime}
+            </div>
+          )}
+          {location && <div className="order-location">{location}</div>}
+          {order.createdAt && (
+            <div className="order-placed">Ordered at {formatTime(order.createdAt)}</div>
+          )}
+
+          <ul className="order-items">
+            {order.items?.map((item, idx) => (
+              <li key={idx}>
+                <span>{item.emoji} {item.name}</span>
+                <span className="order-item-qty">×{item.quantity}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-      {location && <div className="order-location">{location}</div>}
 
-      <ul className="order-items">
-        {order.items?.map((item, idx) => (
-          <li key={idx}>
-            <span>{item.emoji} {item.name}</span>
-            <span className="order-item-qty">×{item.quantity}</span>
-          </li>
-        ))}
-      </ul>
-
+      {/* Action footer — always visible so orders can be completed without expanding */}
       <div className="order-card-foot">
-        <span className="order-total">${order.grandTotal?.toFixed(2)}</span>
         {order.status === 'active' ? (
           <button
             className="admin-btn-primary"
