@@ -213,6 +213,33 @@
   font-size: 1rem;
 }
 
+.event-banner-serving {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 0.5rem 0.85rem;
+  flex-shrink: 0;
+}
+
+.event-banner-serving-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.event-banner-serving-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ═══════════════════════════════════════════
    MENU CATEGORIES
    ═══════════════════════════════════════════ */

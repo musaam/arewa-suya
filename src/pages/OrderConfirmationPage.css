@@ -206,3 +206,43 @@
   color: var(--text-primary);
   text-align: right;
 }
+
+/* Now serving (event orders) */
+.now-serving {
+  background: #eaf5ee;
+  border: 1px solid #bfe0cb;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin: 0 auto 1.25rem;
+  max-width: 320px;
+  text-align: center;
+}
+
+.now-serving-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.now-serving-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3d6b34;
+}
+
+.now-serving-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a7a3c;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.now-serving-note {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #3d6b34;
+}

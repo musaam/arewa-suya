@@ -1,3 +1,4 @@
+import { useConfig } from '../context/ConfigContext'
 import './OrderConfirmationPage.css'
 
 function formatScheduleDate(dateStr) {
@@ -10,8 +11,14 @@ function formatScheduleDate(dateStr) {
 }
 
 export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain }) {
+  const { nowServing } = useConfig()
   const orderNumber = order?.orderNumber
     || (order?.firestoreId ? order.firestoreId.slice(-6).toUpperCase() : '…')
+
+  const isEvent = order?.orderType === 'event'
+  // Only meaningful when we have a numeric order number and a serving number.
+  const showServing = isEvent && typeof nowServing === 'number' && typeof order?.orderNumber === 'number'
+  const aheadCount = showServing ? Math.max(0, order.orderNumber - nowServing) : null
 
   return (
     <div className="confirmation-page">
@@ -40,6 +47,22 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
         <div className="order-number">
           Order <span>#{orderNumber}</span>
         </div>
+
+        {showServing && (
+          <div className="now-serving">
+            <div className="now-serving-row">
+              <span className="now-serving-label">Now serving</span>
+              <span className="now-serving-num">#{nowServing}</span>
+            </div>
+            <p className="now-serving-note">
+              {aheadCount === 0
+                ? "You're up next — head to the booth!"
+                : aheadCount === 1
+                ? '1 order ahead of you.'
+                : `${aheadCount} orders ahead of you.`}
+            </p>
+          </div>
+        )}
 
         {order && (
           <div className="ordered-items">

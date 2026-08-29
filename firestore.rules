@@ -41,8 +41,21 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
-    // App config (event mode, etc). Anyone can read it (the storefront needs
-    // it to render), but only the admin can change it.
+    // App config (event mode, menu, etc). Anyone can read it (the storefront
+    // needs it to render), but only the admin can change it.
+    match /config/app {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // "Now serving" order number, shown to customers during an event. Staff
+    // (server or admin) advance it; everyone can read it.
+    match /config/serving {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+
+    // Any other config docs: public read, admin-only write.
     match /config/{configId} {
       allow read: if true;
       allow write: if isAdmin();

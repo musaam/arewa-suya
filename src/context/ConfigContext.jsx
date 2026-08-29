@@ -19,6 +19,8 @@ export function ConfigProvider({ children }) {
   // Menu starts from the hardcoded fallback so the storefront always renders,
   // even before the Firestore menu has been seeded.
   const [menuCategories, setMenuCategories] = useState(fallbackMenu)
+  // "Now serving" order number for events (null when not set).
+  const [nowServing, setNowServing] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -48,8 +50,25 @@ export function ConfigProvider({ children }) {
     return unsub
   }, [])
 
+  useEffect(() => {
+    // Live subscription to the "now serving" number (separate doc so staff can
+    // update it without touching admin-only config/app).
+    const unsub = onSnapshot(
+      doc(db, 'config', 'serving'),
+      (snap) => {
+        const val = snap.exists() ? snap.data().current : null
+        setNowServing(typeof val === 'number' ? val : null)
+      },
+      (err) => {
+        console.error('Failed to load now-serving:', err)
+        setNowServing(null)
+      }
+    )
+    return unsub
+  }, [])
+
   return (
-    <ConfigContext.Provider value={{ eventMode, menuCategories, loading }}>
+    <ConfigContext.Provider value={{ eventMode, menuCategories, nowServing, loading }}>
       {children}
     </ConfigContext.Provider>
   )

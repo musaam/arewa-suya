@@ -6,9 +6,11 @@ import {
   onSnapshot,
   doc,
   updateDoc,
+  setDoc,
   serverTimestamp,
 } from 'firebase/firestore'
 import { db } from '../firebase'
+import { useConfig } from '../context/ConfigContext'
 import {
   LoginForm,
   useAuthUser,
@@ -16,6 +18,7 @@ import {
   isStaffEmail,
 } from './auth'
 import './AdminPage.css'
+import './ServerPage.css'
 
 function formatTime(ts) {
   if (!ts) return ''
@@ -67,7 +70,6 @@ function OrderCard({ order, onComplete, completing }) {
         <span className={`order-chevron ${expanded ? 'open' : ''}`} aria-hidden="true">▸</span>
         <span className="admin-order-number">#{order.orderNumber ?? '—'}</span>
         <span className="admin-order-summary-name">{order.customer?.name}</span>
-        {order.orderType === 'event' && <span className="order-tag event">{order.eventName || 'Event'}</span>}
         <span className="admin-order-summary-meta">{itemCount} item{itemCount === 1 ? '' : 's'}</span>
         <span className="order-total">${order.grandTotal?.toFixed(2)}</span>
       </button>
@@ -93,6 +95,7 @@ function OrderCard({ order, onComplete, completing }) {
             </div>
           )}
           {location && <div className="order-location">{location}</div>}
+          {order.orderType === 'event' && <span>{order.eventName || 'Event'}</span>}
           {order.createdAt && (
             <div className="order-placed">Ordered at {formatTime(order.createdAt)}</div>
           )}
@@ -123,6 +126,81 @@ function OrderCard({ order, onComplete, completing }) {
         )}
       </div>
     </div>
+  )
+}
+
+function NowServingControl() {
+  const { eventMode, nowServing } = useConfig()
+  const [saving, setSaving] = useState(false)
+  const [manual, setManual] = useState('')
+
+  async function setServing(value) {
+    const next = Number(value)
+    if (!Number.isFinite(next) || next < 0) return
+    setSaving(true)
+    try {
+      await setDoc(doc(db, 'config', 'serving'), { current: next }, { merge: true })
+    } catch (err) {
+      console.error('Failed to update now-serving:', err)
+      alert('Could not update the serving number. Please try again.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // Only relevant during an event.
+  if (!eventMode.enabled) return null
+
+  const current = typeof nowServing === 'number' ? nowServing : 0
+
+  return (
+    <section className="serving-panel">
+      <div className="serving-head">
+        <div>
+          <h2>Now Serving</h2>
+          <p className="event-panel-status">Customers see this number during {eventMode.name || 'the event'}.</p>
+        </div>
+        <span className="serving-number">#{current}</span>
+      </div>
+
+      <div className="serving-controls">
+        <button
+          className="admin-btn-ghost"
+          onClick={() => setServing(current - 1)}
+          disabled={saving || current <= 0}
+        >
+          −
+        </button>
+        <button
+          className="admin-btn-primary"
+          onClick={() => setServing(current + 1)}
+          disabled={saving}
+        >
+          Next (#{current + 1})
+        </button>
+        <form
+          className="serving-set"
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (manual.trim() !== '') {
+              setServing(manual.trim())
+              setManual('')
+            }
+          }}
+        >
+          <input
+            type="number"
+            min="0"
+            placeholder="Set #"
+            value={manual}
+            onChange={(e) => setManual(e.target.value)}
+          />
+          <button type="submit" className="admin-btn-ghost" disabled={saving || manual.trim() === ''}>
+            Set
+          </button>
+        </form>
+      </div>
+    </section>
   )
 }
 
@@ -195,6 +273,8 @@ function OrderQueue({ user }) {
           </button>
         </div>
       </header>
+
+      <NowServingControl />
 
       <div className="admin-tabs">
         <button

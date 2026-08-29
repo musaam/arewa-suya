@@ -7,7 +7,7 @@ import './MenuPage.css'
 export default function MenuPage() {
   const navigate = useNavigate()
   const { items, totalItems, addItem, updateQuantity } = useCart()
-  const { eventMode, menuCategories } = useConfig()
+  const { eventMode, menuCategories, nowServing } = useConfig()
   const [lightbox, setLightbox] = useState(null)
 
   // Hide items explicitly marked unavailable, and in event mode restrict to the
@@ -102,6 +102,12 @@ export default function MenuPage() {
               <strong>We're at {eventMode.name}!</strong>
               <span>Order below and pick up at our booth. Only event items are available today.</span>
             </div>
+            {typeof nowServing === 'number' && (
+              <div className="event-banner-serving">
+                <span className="event-banner-serving-label">Now serving</span>
+                <span className="event-banner-serving-num">#{nowServing}</span>
+              </div>
+            )}
           </div>
         )}
         {visibleCategories.map((category) => (
