@@ -81,10 +81,6 @@ exports.sendOrderEmail = onCall(
               <td style="padding: 4px 0; color: #7b5535;">Subtotal</td>
               <td style="padding: 4px 0; text-align: right; color: #7b5535;">$${order.subtotal.toFixed(2)}</td>
             </tr>
-            <tr>
-              <td style="padding: 4px 0; color: #7b5535;">Tax (12%)</td>
-              <td style="padding: 4px 0; text-align: right; color: #7b5535;">$${order.tax.toFixed(2)}</td>
-            </tr>
             ${order.deliveryFee ? `<tr>
               <td style="padding: 4px 0; color: #7b5535;">Delivery Fee</td>
               <td style="padding: 4px 0; text-align: right; color: #7b5535;">$${order.deliveryFee.toFixed(2)}</td>
@@ -138,10 +134,6 @@ exports.sendOrderEmail = onCall(
             <tr>
               <td style="padding: 4px 0; color: #7b5535;">Subtotal</td>
               <td style="padding: 4px 0; text-align: right; color: #7b5535;">$${order.subtotal.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td style="padding: 4px 0; color: #7b5535;">Tax (12%)</td>
-              <td style="padding: 4px 0; text-align: right; color: #7b5535;">$${order.tax.toFixed(2)}</td>
             </tr>
             ${order.deliveryFee ? `<tr>
               <td style="padding: 4px 0; color: #7b5535;">Delivery Fee</td>

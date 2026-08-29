@@ -53,8 +53,7 @@ export default function CartPage({ onCheckout }) {
   }, [customer, deliveryMethod, orderDate, orderTime, address])
 
   const deliveryFee = deliveryMethod === 'delivery' && address.trim() ? 5.00 : 0
-  const tax = totalPrice * 0.12
-  const grandTotal = totalPrice + tax + deliveryFee
+  const grandTotal = totalPrice + deliveryFee
 
   function formatPhone(value) {
     const digits = value.replace(/\D/g, '').slice(0, 10)
@@ -332,10 +331,6 @@ export default function CartPage({ onCheckout }) {
               <div className="summary-line">
                 <span>Subtotal</span>
                 <span>${totalPrice.toFixed(2)}</span>
-              </div>
-              <div className="summary-line">
-                <span>Tax (12%)</span>
-                <span>${tax.toFixed(2)}</span>
               </div>
               {deliveryFee > 0 && (
                 <div className="summary-line">

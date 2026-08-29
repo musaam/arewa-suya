@@ -22,8 +22,7 @@ function AppContent() {
   const hideNavbar = location.pathname === '/confirmation' || location.pathname === '/admin'
 
   async function handleCheckout(customer, { deliveryMethod, deliveryFee, orderDate, orderTime, address, pickupAddress }) {
-    const tax = totalPrice * 0.12
-    const grandTotal = totalPrice + tax + deliveryFee
+    const grandTotal = totalPrice + deliveryFee
 
     const order = {
       customer: {
@@ -46,7 +45,6 @@ function AppContent() {
         subtotal: item.price * item.quantity,
       })),
       subtotal: totalPrice,
-      tax,
       grandTotal,
     }
 
