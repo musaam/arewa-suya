@@ -1,3 +1,4 @@
+import { useConfig } from '../context/ConfigContext'
 import './OrderConfirmationPage.css'
 
 function formatScheduleDate(dateStr) {
@@ -10,8 +11,14 @@ function formatScheduleDate(dateStr) {
 }
 
 export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain }) {
+  const { nowServing } = useConfig()
   const orderNumber = order?.orderNumber
     || (order?.firestoreId ? order.firestoreId.slice(-6).toUpperCase() : '…')
+
+  const isEvent = order?.orderType === 'event'
+  // Only meaningful when we have a numeric order number and a serving number.
+  const showServing = isEvent && typeof nowServing === 'number' && typeof order?.orderNumber === 'number'
+  const aheadCount = showServing ? Math.max(0, order.orderNumber - nowServing) : null
 
   return (
     <div className="confirmation-page">
@@ -41,6 +48,22 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
           Order <span>#{orderNumber}</span>
         </div>
 
+        {showServing && (
+          <div className="now-serving">
+            <div className="now-serving-row">
+              <span className="now-serving-label">Now serving</span>
+              <span className="now-serving-num">#{nowServing}</span>
+            </div>
+            <p className="now-serving-note">
+              {aheadCount === 0
+                ? "You're up next — head to the booth!"
+                : aheadCount === 1
+                ? '1 order ahead of you.'
+                : `${aheadCount} orders ahead of you.`}
+            </p>
+          </div>
+        )}
+
         {order && (
           <div className="ordered-items">
             <h3>What you ordered</h3>
@@ -62,7 +85,9 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
           <div className="order-schedule">
             <div className="order-schedule-row">
               <span className="order-schedule-label">
-                {order.deliveryMethod === 'delivery' ? 'Delivery' : 'Pickup'}
+                {order.orderType === 'event'
+                  ? `${order.eventName || 'Event'} Pickup`
+                  : order.deliveryMethod === 'delivery' ? 'Delivery' : 'Pickup'}
               </span>
             </div>
             {(order.orderDate || order.orderTime) && (
@@ -87,7 +112,9 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
         )}
 
         <p className="pickup-note">
-          An order confirmation email has been sent to the email you provided. Please refer to it for details about pickup or delivery.
+          {order?.orderType === 'event'
+            ? `Come to our booth at ${order.eventName || 'the event'} and pick up your order as soon as it's ready. A confirmation email has been sent to you.`
+            : 'An order confirmation email has been sent to the email you provided. Please refer to it for details about pickup or delivery.'}
         </p>
 
         <div className="confirmation-actions">

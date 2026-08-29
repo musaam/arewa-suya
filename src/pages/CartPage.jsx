@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useConfig } from '../context/ConfigContext'
 import CartItem from '../components/CartItem'
 import './CartPage.css'
 
@@ -31,6 +32,8 @@ export function clearCheckoutDetails() {
 export default function CartPage({ onCheckout }) {
   const navigate = useNavigate()
   const { items, totalPrice, totalItems } = useCart()
+  const { eventMode } = useConfig()
+  const isEvent = eventMode.enabled
 
   const saved = loadCheckoutDetails() || {}
   const [customer, setCustomer] = useState(saved.customer || { name: '', email: '', phone: '' })
@@ -52,9 +55,10 @@ export default function CartPage({ onCheckout }) {
     }
   }, [customer, deliveryMethod, orderDate, orderTime, address])
 
-  const deliveryFee = deliveryMethod === 'delivery' && address.trim() ? 5.00 : 0
-  const tax = totalPrice * 0.12
-  const grandTotal = totalPrice + tax + deliveryFee
+  // In event mode everything is pickup at the event, with no delivery fee.
+  const effectiveDeliveryMethod = isEvent ? 'pickup' : deliveryMethod
+  const deliveryFee = !isEvent && deliveryMethod === 'delivery' && address.trim() ? 5.00 : 0
+  const grandTotal = totalPrice + deliveryFee
 
   function formatPhone(value) {
     const digits = value.replace(/\D/g, '').slice(0, 10)
@@ -102,8 +106,6 @@ export default function CartPage({ onCheckout }) {
   }
 
   const timeSlots = [
-    '11:00 AM', '11:30 AM',
-    '12:00 PM', '12:30 PM',
     '1:00 PM', '1:30 PM',
     '2:00 PM', '2:30 PM',
     '3:00 PM', '3:30 PM',
@@ -127,14 +129,16 @@ export default function CartPage({ onCheckout }) {
     if (customer.phone.trim() && !/^(\+?1[\s\-.]?)?\(?\d{3}\)?[\s\-.]?\d{3}[\s\-.]?\d{4}$/.test(customer.phone.trim())) {
       newErrors.phone = 'Please enter a valid phone number (e.g. 416-555-1234)'
     }
-    if (!orderDate) {
-      newErrors.orderDate = 'Please select a date'
-    }
-    if (!orderTime) {
-      newErrors.orderTime = 'Please select a time'
-    }
-    if (deliveryMethod === 'delivery' && !address.trim()) {
-      newErrors.address = 'Please enter your delivery address'
+    if (!isEvent) {
+      if (!orderDate) {
+        newErrors.orderDate = 'Please select a date'
+      }
+      if (!orderTime) {
+        newErrors.orderTime = 'Please select a time'
+      }
+      if (deliveryMethod === 'delivery' && !address.trim()) {
+        newErrors.address = 'Please enter your delivery address'
+      }
     }
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -143,12 +147,14 @@ export default function CartPage({ onCheckout }) {
   function handlePlaceOrder() {
     if (validate()) {
       onCheckout(customer, {
-        deliveryMethod,
+        isEvent,
+        eventName: isEvent ? eventMode.name : '',
+        deliveryMethod: effectiveDeliveryMethod,
         deliveryFee,
-        orderDate,
-        orderTime,
-        address: deliveryMethod === 'delivery' ? address.trim() : '',
-        pickupAddress: deliveryMethod === 'pickup' ? PICKUP_ADDRESS : '',
+        orderDate: isEvent ? '' : orderDate,
+        orderTime: isEvent ? '' : orderTime,
+        address: !isEvent && deliveryMethod === 'delivery' ? address.trim() : '',
+        pickupAddress: isEvent ? eventMode.location : (effectiveDeliveryMethod === 'pickup' ? PICKUP_ADDRESS : ''),
       })
       // Order submitted — don't keep the details around for the next order.
       clearCheckoutDetails()
@@ -238,56 +244,68 @@ export default function CartPage({ onCheckout }) {
             </div>
 
             {/* Delivery method */}
-            <div className="delivery-method">
-              <h2>Order Type</h2>
-              <div className="delivery-toggle">
-                <button
-                  className={`toggle-btn ${deliveryMethod === 'pickup' ? 'active' : ''}`}
-                  onClick={() => setDeliveryMethod('pickup')}
-                  type="button"
-                >
-                  Pickup
-                </button>
-                <button
-                  className={`toggle-btn ${deliveryMethod === 'delivery' ? 'active' : ''}`}
-                  onClick={() => setDeliveryMethod('delivery')}
-                  type="button"
-                >
-                  Delivery
-                </button>
-              </div>
-              {deliveryMethod === 'delivery' && (
-                <div className={`form-field delivery-address-field ${errors.address ? 'has-error' : ''}`}>
-                  <label htmlFor="delivery-address">Delivery Address</label>
-                  <textarea
-                    id="delivery-address"
-                    placeholder="Street address, unit/apt, city, postal code"
-                    value={address}
-                    onChange={(e) => {
-                      setAddress(e.target.value)
-                      if (errors.address) setErrors((p) => ({ ...p, address: '' }))
-                    }}
-                    rows={3}
-                    autoComplete="street-address"
-                  />
-                  {errors.address && <span className="field-error">{errors.address}</span>}
-                </div>
-              )}
-
-              {deliveryMethod === 'delivery' && address.trim() && (
-                <p className="delivery-note">A $5.00 delivery fee has been added to your order.</p>
-              )}
-
-              {deliveryMethod === 'pickup' && (
+            {isEvent ? (
+              <div className="delivery-method">
+                <h2>Pickup at {eventMode.name}</h2>
                 <div className="pickup-address">
-                  <span className="pickup-address-label">📍 Pickup Location</span>
-                  <span className="pickup-address-value">{PICKUP_ADDRESS}</span>
+                  <span className="pickup-address-label">📍 Event Location</span>
+                  <span className="pickup-address-value">{eventMode.location || 'See event details'}</span>
                 </div>
-              )}
-            </div>
+                {eventMode.note && <p className="delivery-note">{eventMode.note}</p>}
+              </div>
+            ) : (
+              <div className="delivery-method">
+                <h2>Order Type</h2>
+                <div className="delivery-toggle">
+                  <button
+                    className={`toggle-btn ${deliveryMethod === 'pickup' ? 'active' : ''}`}
+                    onClick={() => setDeliveryMethod('pickup')}
+                    type="button"
+                  >
+                    Pickup
+                  </button>
+                  <button
+                    className={`toggle-btn ${deliveryMethod === 'delivery' ? 'active' : ''}`}
+                    onClick={() => setDeliveryMethod('delivery')}
+                    type="button"
+                  >
+                    Delivery
+                  </button>
+                </div>
+                {deliveryMethod === 'delivery' && (
+                  <div className={`form-field delivery-address-field ${errors.address ? 'has-error' : ''}`}>
+                    <label htmlFor="delivery-address">Delivery Address</label>
+                    <textarea
+                      id="delivery-address"
+                      placeholder="Street address, unit/apt, city, postal code"
+                      value={address}
+                      onChange={(e) => {
+                        setAddress(e.target.value)
+                        if (errors.address) setErrors((p) => ({ ...p, address: '' }))
+                      }}
+                      rows={3}
+                      autoComplete="street-address"
+                    />
+                    {errors.address && <span className="field-error">{errors.address}</span>}
+                  </div>
+                )}
 
-            {/* Date & Time selection */}
-            <div className="datetime-section">
+                {deliveryMethod === 'delivery' && address.trim() && (
+                  <p className="delivery-note">A $5.00 delivery fee has been added to your order.</p>
+                )}
+
+                {deliveryMethod === 'pickup' && (
+                  <div className="pickup-address">
+                    <span className="pickup-address-label">📍 Pickup Location</span>
+                    <span className="pickup-address-value">{PICKUP_ADDRESS}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Date & Time selection — not used in event mode (pickup is ASAP) */}
+            {!isEvent && (
+              <div className="datetime-section">
               <h2>{deliveryMethod === 'pickup' ? 'Pickup' : 'Delivery'} Date &amp; Time</h2>
               <p className="datetime-note">We prepare fresh suya on weekends only (Saturday &amp; Sunday).</p>
               <div className={`form-field ${errors.orderDate ? 'has-error' : ''}`}>
@@ -327,6 +345,7 @@ export default function CartPage({ onCheckout }) {
                 {errors.orderTime && <span className="field-error">{errors.orderTime}</span>}
               </div>
             </div>
+            )}
 
             {/* Order summary */}
             <div className="order-summary">
@@ -334,10 +353,6 @@ export default function CartPage({ onCheckout }) {
               <div className="summary-line">
                 <span>Subtotal</span>
                 <span>${totalPrice.toFixed(2)}</span>
-              </div>
-              <div className="summary-line">
-                <span>Tax (12%)</span>
-                <span>${tax.toFixed(2)}</span>
               </div>
               {deliveryFee > 0 && (
                 <div className="summary-line">

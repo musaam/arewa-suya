@@ -11,7 +11,7 @@ export const menuCategories = [
     items: [
       {
         id: 'suya-plate',
-        name: 'Suya Plate',
+        name: 'Beef Suya Plate',
         description: 'Suya + vegetables',
         price: 20.00,
         emoji: '🍖',
@@ -19,7 +19,7 @@ export const menuCategories = [
       },
       {
         id: 'suya-plate-combo-1',
-        name: 'Suya Plate Combo 1',
+        name: 'Beef Suya Plate Combo 1',
         description: 'Suya + masa + zobo',
         price: 30.00,
         emoji: '🍖',
@@ -27,7 +27,7 @@ export const menuCategories = [
       },
       {
         id: 'suya-plate-combo-2',
-        name: 'Suya Plate Combo 2',
+        name: 'Beef Suya Plate Combo 2',
         description: 'Suya + masa',
         price: 25.00,
         emoji: '🍖',
@@ -42,7 +42,7 @@ export const menuCategories = [
     items: [
       {
         id: 'suya-bundle-3',
-        name: 'Suya Bundle — 3 Plates',
+        name: 'Beef Suya Bundle — 3 Plates',
         description: '3 Suya Plates — You save $10!',
         price: 50.00,
         emoji: '🍢',
@@ -56,7 +56,7 @@ export const menuCategories = [
     items: [
       {
         id: 'family-suya-tray',
-        name: 'Family Suya Tray',
+        name: 'Family Beef Suya Tray',
         description: 'Generous portion for the family',
         price: 100.00,
         emoji: '🍽️',
@@ -64,7 +64,7 @@ export const menuCategories = [
       },
       {
         id: 'family-tray-combo',
-        name: 'Family Tray Combo',
+        name: 'Family Beef Suya Tray Combo',
         description: 'Suya tray + 8 masa + 6 zobo',
         price: 140.00,
         emoji: '🍽️',
@@ -79,7 +79,7 @@ export const menuCategories = [
       {
         id: 'masa-tray',
         name: 'Masa Tray',
-        description: 'Traditional rice cakes — tray size',
+        description: 'Traditional rice cakes — 8 pieces',
         price: 25.00,
         emoji: '🫓',
         image: '/masa.png',
@@ -87,7 +87,7 @@ export const menuCategories = [
       {
         id: 'masa-plate',
         name: 'Masa Plate',
-        description: 'Traditional rice cakes — plate size',
+        description: 'Traditional rice cakes — 4 pieces',
         price: 10.00,
         emoji: '🫓',
         image: '/masa.png',
@@ -96,7 +96,7 @@ export const menuCategories = [
         id: 'zobo',
         name: 'Zobo',
         description: 'Traditional hibiscus drink',
-        price: 6.00,
+        price: 5.00,
         emoji: '🥤',
         image: '/zobo.jpeg',
       },
