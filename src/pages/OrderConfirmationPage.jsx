@@ -75,7 +75,7 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
               </div>
             ))}
             <div className="confirmed-total">
-              <span>Total paid</span>
+              <span>Total ordered</span>
               <span>${order.grandTotal.toFixed(2)}</span>
             </div>
           </div>
