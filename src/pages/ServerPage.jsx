@@ -26,17 +26,6 @@ function formatTime(ts) {
   return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
 }
 
-function isToday(ts) {
-  if (!ts) return false
-  const d = ts.toDate ? ts.toDate() : new Date(ts)
-  const now = new Date()
-  return (
-    d.getFullYear() === now.getFullYear() &&
-    d.getMonth() === now.getMonth() &&
-    d.getDate() === now.getDate()
-  )
-}
-
 // Format the scheduled order date (stored as YYYY-MM-DD). Parse the parts
 // explicitly so it's treated as a local date, not shifted by UTC.
 function formatScheduledDate(dateStr) {
@@ -231,13 +220,12 @@ function OrderQueue({ user }) {
     return unsub
   }, [])
 
-  // Real-time listener for completed orders (filtered to today client-side).
+  // Real-time listener for completed orders (all dates).
   useEffect(() => {
     const q = query(collection(db, 'orders'), where('status', '==', 'completed'))
     const unsub = onSnapshot(q, (snap) => {
       const rows = snap.docs
         .map((d) => ({ id: d.id, ...d.data() }))
-        .filter((o) => isToday(o.completedAt))
       // Most recently completed first.
       rows.sort((a, b) => (b.completedAt?.seconds ?? 0) - (a.completedAt?.seconds ?? 0))
       setCompletedOrders(rows)
@@ -287,7 +275,7 @@ function OrderQueue({ user }) {
           className={`admin-tab ${tab === 'completed' ? 'active' : ''}`}
           onClick={() => setTab('completed')}
         >
-          Completed today ({completedOrders.length})
+          Completed ({completedOrders.length})
         </button>
       </div>
 
@@ -295,7 +283,7 @@ function OrderQueue({ user }) {
 
       {orders.length === 0 ? (
         <p className="admin-empty">
-          {tab === 'active' ? 'No active orders right now.' : 'No orders completed today yet.'}
+          {tab === 'active' ? 'No active orders right now.' : 'No completed orders yet.'}
         </p>
       ) : (
         <div className="admin-orders-grid">
