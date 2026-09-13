@@ -92,7 +92,12 @@ function OrderCard({ order, onComplete, completing }) {
           <ul className="order-items">
             {order.items?.map((item, idx) => (
               <li key={idx}>
-                <span>{item.emoji} {item.name}</span>
+                <span>
+                  {item.emoji} {item.name}
+                  {item.spiceLevel && (
+                    <span className="order-item-spice">🌶️ {item.spiceLevel}</span>
+                  )}
+                </span>
                 <span className="order-item-qty">×{item.quantity}</span>
               </li>
             ))}

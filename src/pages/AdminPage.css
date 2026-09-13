@@ -385,6 +385,12 @@
   cursor: pointer;
 }
 
+.menu-editor-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
 .menu-editor-avail input {
   width: 16px;
   height: 16px;

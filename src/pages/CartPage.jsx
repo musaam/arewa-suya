@@ -187,7 +187,7 @@ export default function CartPage({ onCheckout }) {
           {/* Items list */}
           <div className="cart-items-list">
             {items.map((item) => (
-              <CartItem key={item.id} item={item} />
+              <CartItem key={item.lineId} item={item} />
             ))}
             <button className="add-more-btn" onClick={() => navigate('/')}>
               + Add more items

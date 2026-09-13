@@ -44,6 +44,7 @@ function AppContent() {
         id: item.id,
         name: item.name,
         emoji: item.emoji,
+        spiceLevel: item.spiceLevel || '',
         price: item.price,
         quantity: item.quantity,
         subtotal: item.price * item.quantity,

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useConfig } from '../context/ConfigContext'
+import { SPICE_LEVELS, DEFAULT_SPICE_LEVEL } from '../data/menu'
 import './MenuPage.css'
 
 export default function MenuPage() {
@@ -9,6 +10,18 @@ export default function MenuPage() {
   const { items, totalItems, addItem, updateQuantity } = useCart()
   const { eventMode, menuCategories, nowServing } = useConfig()
   const [lightbox, setLightbox] = useState(null)
+  // Tracks the spice level a customer has picked for each suya item before
+  // adding it to the cart. Keyed by menu item id; defaults to Medium.
+  const [spiceByItem, setSpiceByItem] = useState({})
+
+  // The list of spice levels a given item supports. Items may carry their own
+  // spiceLevels array; otherwise fall back to the shared default list.
+  const spiceOptionsFor = (item) =>
+    Array.isArray(item.spiceLevels) && item.spiceLevels.length > 0
+      ? item.spiceLevels
+      : SPICE_LEVELS
+
+  const selectedSpice = (item) => spiceByItem[item.id] || DEFAULT_SPICE_LEVEL
 
   // Hide items explicitly marked unavailable, and in event mode restrict to the
   // items being sold at the event. Empty categories are dropped.
@@ -24,11 +37,18 @@ export default function MenuPage() {
     .filter((cat) => cat.items.length > 0)
 
   const handleAdd = (item) => {
-    addItem({ id: item.id, name: item.name, price: item.price, emoji: item.emoji })
+    const spiceLevel = item.spiceLevel ? selectedSpice(item) : undefined
+    addItem({ id: item.id, name: item.name, price: item.price, emoji: item.emoji, spiceLevel })
   }
 
-  const getQuantity = (id) => {
-    const cartItem = items.find((i) => i.id === id)
+  // The cart line id for an item at its currently-selected spice level. Mirrors
+  // the keying logic in CartContext so the stepper controls the right line.
+  const lineIdFor = (item) =>
+    item.spiceLevel ? `${item.id}::${selectedSpice(item)}` : item.id
+
+  const getQuantity = (item) => {
+    const lineId = lineIdFor(item)
+    const cartItem = items.find((i) => i.lineId === lineId)
     return cartItem ? cartItem.quantity : 0
   }
 
@@ -131,32 +151,57 @@ export default function MenuPage() {
                   <div className="menu-item-info">
                     <h3 className="menu-item-name">{item.name}</h3>
                     <p className="menu-item-desc">{item.description}</p>
+                    {item.spiceLevel && (
+                      <div
+                        className="spice-selector"
+                        role="radiogroup"
+                        aria-label={`Spice level for ${item.name}`}
+                      >
+                        <span className="spice-selector-label">🌶️ Spice</span>
+                        <div className="spice-options">
+                          {spiceOptionsFor(item).map((level) => (
+                            <button
+                              key={level}
+                              type="button"
+                              role="radio"
+                              aria-checked={selectedSpice(item) === level}
+                              className={`spice-option ${selectedSpice(item) === level ? 'selected' : ''}`}
+                              onClick={() =>
+                                setSpiceByItem((prev) => ({ ...prev, [item.id]: level }))
+                              }
+                            >
+                              {level}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="menu-item-action">
                     <span className="menu-item-price">${item.price.toFixed(2)}</span>
-                    {getQuantity(item.id) === 0 ? (
+                    {getQuantity(item) === 0 ? (
                       <button
                         className="menu-item-add-btn"
                         onClick={() => handleAdd(item)}
-                        aria-label={`Add ${item.name} to cart`}
+                        aria-label={`Add ${item.name}${item.spiceLevel ? ` (${selectedSpice(item)})` : ''} to cart`}
                       >
                         +
                       </button>
                     ) : (
-                      <div className="menu-item-stepper" role="group" aria-label={`Quantity for ${item.name}`}>
+                      <div className="menu-item-stepper" role="group" aria-label={`Quantity for ${item.name}${item.spiceLevel ? ` (${selectedSpice(item)})` : ''}`}>
                         <button
                           className="menu-item-stepper-btn"
-                          onClick={() => updateQuantity(item.id, getQuantity(item.id) - 1)}
+                          onClick={() => updateQuantity(lineIdFor(item), getQuantity(item) - 1)}
                           aria-label={`Decrease quantity of ${item.name}`}
                         >
                           −
                         </button>
                         <span className="menu-item-stepper-value" aria-live="polite">
-                          {getQuantity(item.id)}
+                          {getQuantity(item)}
                         </span>
                         <button
                           className="menu-item-stepper-btn"
-                          onClick={() => updateQuantity(item.id, getQuantity(item.id) + 1)}
+                          onClick={() => updateQuantity(lineIdFor(item), getQuantity(item) + 1)}
                           aria-label={`Increase quantity of ${item.name}`}
                         >
                           +
