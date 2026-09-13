@@ -24,7 +24,7 @@ exports.sendOrderEmail = onCall(
       .map(
         (item) =>
           `<tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #e2d0bc;">${item.emoji} ${item.name}</td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #e2d0bc;">${item.emoji} ${item.name}${item.spiceLevel ? ` <span style="color: #8b1a2b; font-weight: 600;">· 🌶️ ${item.spiceLevel}</span>` : ''}</td>
             <td style="padding: 8px 0; border-bottom: 1px solid #e2d0bc; text-align: center;">×${item.quantity}</td>
             <td style="padding: 8px 0; border-bottom: 1px solid #e2d0bc; text-align: right;">$${item.subtotal.toFixed(2)}</td>
           </tr>`

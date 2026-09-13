@@ -67,9 +67,9 @@ export default function OrderConfirmationPage({ order, orderStatus, onOrderAgain
         {order && (
           <div className="ordered-items">
             <h3>What you ordered</h3>
-            {order.items.map((item) => (
-              <div key={item.id} className="confirmed-item">
-                <span>{item.emoji} {item.name}</span>
+            {order.items.map((item, idx) => (
+              <div key={idx} className="confirmed-item">
+                <span>{item.emoji} {item.name}{item.spiceLevel ? ` · 🌶️ ${item.spiceLevel}` : ''}</span>
                 <span>×{item.quantity}</span>
                 <span>${item.subtotal.toFixed(2)}</span>
               </div>

@@ -370,6 +370,54 @@
   color: #777777;
 }
 
+/* ── Spice level selector (suya items) ── */
+.spice-selector {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.spice-selector-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #8b1a1a;
+  white-space: nowrap;
+}
+
+.spice-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.spice-option {
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.35rem 0.6rem;
+  border-radius: 20px;
+  border: 1px solid #e0cfc0;
+  background: #faf5ee;
+  color: #7b5535;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+
+.spice-option:hover {
+  border-color: #c9a84c;
+  transform: translateY(-1px);
+}
+
+.spice-option.selected {
+  background: #8b1a1a;
+  border-color: #8b1a1a;
+  color: #fff;
+}
+
 .menu-item-action {
   display: flex;
   align-items: center;

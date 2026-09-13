@@ -26,6 +26,16 @@
   color: var(--cafe-espresso);
 }
 
+.cart-item-spice {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #8b1a1a;
+  background: #f7e9e9;
+  border-radius: 12px;
+  padding: 0.1rem 0.5rem;
+}
+
 .cart-item-unit-price {
   font-size: 0.8rem;
   color: var(--text-light);

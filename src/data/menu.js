@@ -4,6 +4,13 @@
 // Default image used for all items until unique photos are provided.
 const DEFAULT_ITEM_IMAGE = '/menu-item.jpg'
 
+// Spice levels a customer can pick for grilled meat (suya) items.
+// Order matters: it's the order shown in the selector, mild → hottest.
+export const SPICE_LEVELS = ['Mild', 'Medium', 'Hot', 'Extra Hot']
+
+// Default selection when a suya item is added without an explicit choice.
+export const DEFAULT_SPICE_LEVEL = 'Mild'
+
 export const menuCategories = [
   {
     id: 'suya-combos',
@@ -16,6 +23,7 @@ export const menuCategories = [
         price: 20.00,
         emoji: '🍖',
         image: '/one-plate.jpg',
+        spiceLevel: true,
       },
       {
         id: 'suya-plate-combo-1',
@@ -24,6 +32,7 @@ export const menuCategories = [
         price: 30.00,
         emoji: '🍖',
         image: '/one-plate.jpg',
+        spiceLevel: true,
       },
       {
         id: 'suya-plate-combo-2',
@@ -32,6 +41,7 @@ export const menuCategories = [
         price: 25.00,
         emoji: '🍖',
         image: '/one-plate.jpg',
+        spiceLevel: true,
       },
     ],
   },
@@ -47,6 +57,7 @@ export const menuCategories = [
         price: 50.00,
         emoji: '🍢',
         image: 'three-plates.jpg',
+        spiceLevel: true,
       },
     ],
   },
@@ -61,6 +72,7 @@ export const menuCategories = [
         price: 100.00,
         emoji: '🍽️',
         image: '/family-tray.jpg',
+        spiceLevel: true,
       },
       {
         id: 'family-tray-combo',
@@ -69,6 +81,7 @@ export const menuCategories = [
         price: 140.00,
         emoji: '🍽️',
         image: '/family-tray.jpg',
+        spiceLevel: true,
       },
     ],
   },

@@ -159,6 +159,7 @@ function MenuEditor() {
         ...item,
         price: Number(item.price) || 0,
         available: item.available !== false,
+        spiceLevel: item.spiceLevel === true,
       })),
     }))
     try {
@@ -222,14 +223,24 @@ function MenuEditor() {
                 onChange={(e) => updateItem(cat.id, item.id, 'description', e.target.value)}
                 placeholder="Description"
               />
-              <label className="menu-editor-avail">
-                <input
-                  type="checkbox"
-                  checked={item.available !== false}
-                  onChange={(e) => updateItem(cat.id, item.id, 'available', e.target.checked)}
-                />
-                <span>Available</span>
-              </label>
+              <div className="menu-editor-toggles">
+                <label className="menu-editor-avail">
+                  <input
+                    type="checkbox"
+                    checked={item.available !== false}
+                    onChange={(e) => updateItem(cat.id, item.id, 'available', e.target.checked)}
+                  />
+                  <span>Available</span>
+                </label>
+                <label className="menu-editor-avail">
+                  <input
+                    type="checkbox"
+                    checked={item.spiceLevel === true}
+                    onChange={(e) => updateItem(cat.id, item.id, 'spiceLevel', e.target.checked)}
+                  />
+                  <span>🌶️ Customer picks spice level</span>
+                </label>
+              </div>
             </div>
           ))}
         </div>
