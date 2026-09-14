@@ -138,7 +138,7 @@ export default function MenuPage() {
             </h2>
             <div className="menu-items-grid">
               {category.items.map((item) => (
-                <div key={item.id} className="menu-item-card">
+                <div key={item.id} className={`menu-item-card ${item.spiceLevel ? 'has-spice' : ''}`}>
                   <button
                     type="button"
                     className="menu-item-thumb"
@@ -151,31 +151,6 @@ export default function MenuPage() {
                   <div className="menu-item-info">
                     <h3 className="menu-item-name">{item.name}</h3>
                     <p className="menu-item-desc">{item.description}</p>
-                    {item.spiceLevel && (
-                      <div
-                        className="spice-selector"
-                        role="radiogroup"
-                        aria-label={`Spice level for ${item.name}`}
-                      >
-                        <span className="spice-selector-label">🌶️ Spice</span>
-                        <div className="spice-options">
-                          {spiceOptionsFor(item).map((level) => (
-                            <button
-                              key={level}
-                              type="button"
-                              role="radio"
-                              aria-checked={selectedSpice(item) === level}
-                              className={`spice-option ${selectedSpice(item) === level ? 'selected' : ''}`}
-                              onClick={() =>
-                                setSpiceByItem((prev) => ({ ...prev, [item.id]: level }))
-                              }
-                            >
-                              {level}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
                   <div className="menu-item-action">
                     <span className="menu-item-price">${item.price.toFixed(2)}</span>
@@ -209,6 +184,31 @@ export default function MenuPage() {
                       </div>
                     )}
                   </div>
+                  {item.spiceLevel && (
+                    <div
+                      className="spice-selector"
+                      role="radiogroup"
+                      aria-label={`Spice level for ${item.name}`}
+                    >
+                      <span className="spice-selector-label">🌶️ Spice level</span>
+                      <div className="spice-options">
+                        {spiceOptionsFor(item).map((level) => (
+                          <button
+                            key={level}
+                            type="button"
+                            role="radio"
+                            aria-checked={selectedSpice(item) === level}
+                            className={`spice-option ${selectedSpice(item) === level ? 'selected' : ''}`}
+                            onClick={() =>
+                              setSpiceByItem((prev) => ({ ...prev, [item.id]: level }))
+                            }
+                          >
+                            {level}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
