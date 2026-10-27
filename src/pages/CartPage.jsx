@@ -73,21 +73,51 @@ export default function CartPage({ onCheckout }) {
     if (errors.phone) setErrors((p) => ({ ...p, phone: '' }))
   }
 
+  // Same-day orders must be placed before this hour (24h clock). After it,
+  // today is no longer offered as a pickup/delivery date.
+  const SAME_DAY_CUTOFF_HOUR = 13 // 1:00 PM
+
+  function isSameDay(a, b) {
+    return a.getFullYear() === b.getFullYear()
+      && a.getMonth() === b.getMonth()
+      && a.getDate() === b.getDate()
+  }
+
+  // Returns true if an order for `date` can no longer be placed today because
+  // it's the same calendar day and we're past the 1 PM cutoff.
+  function isPastSameDayCutoff(date, now = new Date()) {
+    return isSameDay(date, now) && now.getHours() >= SAME_DAY_CUTOFF_HOUR
+  }
+
   function getNextWeekendDates() {
     const dates = []
-    const today = new Date()
+    const now = new Date()
     for (let i = 0; i < 28; i++) {
-      const d = new Date(today)
-      d.setDate(today.getDate() + i)
+      const d = new Date(now)
+      d.setDate(now.getDate() + i)
       const day = d.getDay()
-      if (day === 0 || day === 6) {
-        dates.push(new Date(d))
-      }
+      if (day !== 0 && day !== 6) continue
+      // Skip today if we're past the same-day cutoff (1 PM).
+      if (isPastSameDayCutoff(d, now)) continue
+      dates.push(new Date(d))
     }
     return dates
   }
 
   const weekendDates = getNextWeekendDates()
+  const validDateValues = weekendDates.map(formatDateValue)
+
+  // If a previously-selected date is no longer offered (e.g. the page was open
+  // past the 1 PM same-day cutoff, or a restored sessionStorage value is now in
+  // the past), clear it so the dropdown doesn't show a stale/blank selection.
+  useEffect(() => {
+    if (orderDate && !validDateValues.includes(orderDate)) {
+      setOrderDate('')
+    }
+    // validDateValues is derived from the current time; depending on its joined
+    // form keeps this in sync without re-running every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderDate, validDateValues.join(',')])
 
   function formatDateOption(date) {
     const dayName = date.toLocaleDateString('en-US', { weekday: 'long' })
@@ -132,6 +162,14 @@ export default function CartPage({ onCheckout }) {
     if (!isEvent) {
       if (!orderDate) {
         newErrors.orderDate = 'Please select a date'
+      } else {
+        // Parse the YYYY-MM-DD value as a local date and re-check the cutoff in
+        // case the page was left open past 1 PM with today still selected.
+        const [y, m, d] = orderDate.split('-').map(Number)
+        const selected = new Date(y, m - 1, d)
+        if (isPastSameDayCutoff(selected)) {
+          newErrors.orderDate = 'Same-day orders must be placed before 1:00 PM. Please choose another date.'
+        }
       }
       if (!orderTime) {
         newErrors.orderTime = 'Please select a time'
